@@ -1,4 +1,5 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -196,6 +197,28 @@ class SettingsScreen extends StatelessWidget {
                         )
                       ],
                     ),
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: OutlinedButton(
+                            onPressed: () {
+                              FirebaseMessaging.instance
+                                  .subscribeToTopic('announcement');
+                            },
+                            child: const Text('Subscribe')),
+                      ),
+                      const SizedBox(width: 5),
+                      Expanded(
+                        child: OutlinedButton(
+                            onPressed: () {
+                              FirebaseMessaging.instance
+                                  .unsubscribeFromTopic('announcement');
+                            },
+                            child: const Text('UnSubscribe')),
+                      ),
+                    ],
                   ),
                 ],
               ),
