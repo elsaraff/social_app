@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_application/core/cache_helper.dart';
 import 'package:social_application/home_screen.dart';
 import 'package:social_application/shared/icons_broken.dart';
+import 'package:social_application/social_cubit/social_cubit.dart';
 import 'package:social_application/widgets/custom_text_form_field.dart';
 import 'package:social_application/widgets/functions.dart';
 import 'package:social_application/login/cubit/login_cubit.dart';
@@ -30,9 +31,13 @@ class LoginScreen extends StatelessWidget {
             CacheHelper.saveData(key: 'uId', value: state.uId).then((value) {
               uId = state.uId;
               navigateAndFinish(context, const HomeScreen());
-
-              //emailController.clear();
+              emailController.clear();
               passwordController.clear();
+
+              if (firstTime == false) {
+                SocialCubit.get(context).getUserData();
+                SocialCubit.get(context).getPosts();
+              }
             });
           }
         },

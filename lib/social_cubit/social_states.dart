@@ -90,6 +90,9 @@ class SocialDeletePostErrorState extends SocialStates {
   SocialDeletePostErrorState(this.error);
 }
 
+//Pop
+class SocialPopState extends SocialStates {}
+
 //GetPostComments
 
 class SocialGetPostCommentsSuccessState extends SocialStates {}
@@ -128,8 +131,6 @@ class SocialDisLikePostErrorState extends SocialStates {
   SocialDisLikePostErrorState(this.error);
 }
 
-//class SocialGetLikesNumberSuccessState extends SocialStates {}
-
 //CommentOnPost
 
 class SocialCommentOnPostSuccessState extends SocialStates {}
@@ -159,6 +160,8 @@ class SocialSendMessageError extends SocialStates {
 
   SocialSendMessageError(this.error);
 }
+
+class SocialGetMessageLoading extends SocialStates {}
 
 class SocialGetMessageSuccess extends SocialStates {}
 

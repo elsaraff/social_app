@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_application/home_screen.dart';
 import 'package:social_application/shared/icons_broken.dart';
+import 'package:social_application/social_cubit/social_cubit.dart';
 import 'package:social_application/widgets/custom_text_form_field.dart';
 import 'package:social_application/register/cubit/register_cubit.dart';
 import 'package:social_application/register/cubit/register_state.dart';
@@ -32,6 +33,11 @@ class RegisterScreen extends StatelessWidget {
               emailController.clear();
               phoneController.clear();
               passwordController.clear();
+
+              if (firstTime == false) {
+                SocialCubit.get(context).getUserData();
+                SocialCubit.get(context).getPosts();
+              }
             }
           },
           builder: (context, state) {

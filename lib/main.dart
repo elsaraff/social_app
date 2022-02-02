@@ -39,6 +39,7 @@ void main() async {
   await CacheHelper.init();
 
   uId = CacheHelper.getData(key: 'uId');
+  firstTime = CacheHelper.getData(key: 'firstTime');
 
   Widget startWidget;
 
