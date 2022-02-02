@@ -8,6 +8,7 @@ import 'package:bloc/bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:social_application/chats/chats_screen.dart';
 import 'package:social_application/core/cache_helper.dart';
+import 'package:social_application/core/dio_helper.dart';
 import 'package:social_application/feeds/feeds_screen.dart';
 import 'package:social_application/login/login_screen.dart';
 import 'package:social_application/models/comment_model.dart';
@@ -529,6 +530,22 @@ class SocialCubit extends Cubit<SocialStates> {
         .collection('messages')
         .add(messageModel.toMap())
         .then((value) {
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(receiverId)
+          .collection('token')
+          .get()
+          .then((value) {
+        var element = value.docs.elementAt(0);
+        var receiverToken = element.data()['token'];
+        //debugPrint(receiverToken.toString());
+        //debugPrint(text);
+        //debugPrint(userModel.name);
+        messageNotification(
+            receiverToken: receiverToken,
+            message: text,
+            sender: userModel.name);
+      });
       emit(SocialSendMessageSuccess());
     }).catchError((error) {
       emit(SocialSendMessageError(error.toString()));

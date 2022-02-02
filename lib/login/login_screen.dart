@@ -24,15 +24,17 @@ class LoginScreen extends StatelessWidget {
       create: (context) => LoginCubit(),
       child: BlocConsumer<LoginCubit, LoginStates>(
         listener: (context, state) {
-          if (state is ShopLoginErrorState) {
+          if (state is SocialLoginErrorState) {
             showToast(text: state.error, state: ToastStates.error);
           }
-          if (state is ShopLoginSuccessState) {
+          if (state is SocialLoginSuccessState) {
             CacheHelper.saveData(key: 'uId', value: state.uId).then((value) {
               uId = state.uId;
               navigateAndFinish(context, const HomeScreen());
               emailController.clear();
               passwordController.clear();
+
+              LoginCubit.get(context).updateToken(token);
 
               if (firstTime == false) {
                 SocialCubit.get(context).getUserData();

@@ -1,9 +1,8 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 String uId = '';
+String token = '';
 bool firstTime = true;
 
 var now = DateFormat.yMEd().add_jm().format(DateTime.now());

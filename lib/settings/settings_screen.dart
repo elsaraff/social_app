@@ -220,6 +220,12 @@ class SettingsScreen extends StatelessWidget {
                       ),
                     ],
                   ),
+                  const SizedBox(height: 20),
+                  OutlinedButton(
+                      onPressed: () {
+                        debugPrint('Token ' + token);
+                      },
+                      child: Text('Token ' + token)),
                 ],
               ),
             ));
