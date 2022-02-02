@@ -72,6 +72,13 @@ class RegisterCubit extends Cubit<RegisterStates> {
     FirebaseFirestore.instance
         .collection('users')
         .doc(uId)
+        .collection('token')
+        .doc(uId)
+        .set({'token': token});
+
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(uId)
         .set(model.toMap())
         .then((value) {
       emit(CreatUserSuccessState());

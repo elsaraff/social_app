@@ -1,19 +1,19 @@
 abstract class LoginStates {}
 
-class ShopLoginIntialState extends LoginStates {}
+class SocialLoginIntialState extends LoginStates {}
 
-class ShopChangePasswordVisibilityState extends LoginStates {}
+class SocialChangePasswordVisibilityState extends LoginStates {}
 
-class ShopLoginLoadingState extends LoginStates {}
+class SocialLoginLoadingState extends LoginStates {}
 
-class ShopLoginSuccessState extends LoginStates {
+class SocialLoginSuccessState extends LoginStates {
   final String uId;
 
-  ShopLoginSuccessState(this.uId);
+  SocialLoginSuccessState(this.uId);
 }
 
-class ShopLoginErrorState extends LoginStates {
+class SocialLoginErrorState extends LoginStates {
   final String error;
 
-  ShopLoginErrorState(this.error);
+  SocialLoginErrorState(this.error);
 }

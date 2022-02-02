@@ -19,8 +19,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp();
-  var token = await FirebaseMessaging.instance.getToken();
-  debugPrint('FirebaseMessaging Token ' + token.toString());
+  token = await FirebaseMessaging.instance.getToken();
+  //debugPrint('Token ' + token);
 
   FirebaseMessaging.onMessage.listen((event) {
     debugPrint('onMessage event.data ' + event.data.toString());
