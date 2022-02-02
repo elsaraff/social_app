@@ -9,7 +9,6 @@ import 'package:social_application/social_cubit/social_cubit.dart';
 import 'package:social_application/social_cubit/social_states.dart';
 import 'package:social_application/widgets/functions.dart';
 
-var formKey = GlobalKey<FormState>();
 var messageController = TextEditingController();
 
 class ChatDetailsScreen extends StatelessWidget {
@@ -24,124 +23,135 @@ class ChatDetailsScreen extends StatelessWidget {
         listener: (context, state) {},
         builder: (context, state) {
           return Scaffold(
-            appBar: AppBar(
-              leading: IconButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  icon:
-                      const Icon(IconBroken.Arrow___Left, color: Colors.white)),
-              titleSpacing: 0.0,
-              title: Row(
-                children: [
-                  CircleAvatar(
-                    radius: 20.0,
-                    backgroundImage: NetworkImage(userModel.image),
-                  ),
-                  const SizedBox(width: 15),
-                  Text(userModel.name),
-                ],
-              ),
-            ),
-            body: Form(
-              key: formKey,
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                child: Column(
+              appBar: AppBar(
+                leading: IconButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: const Icon(IconBroken.Arrow___Left,
+                        color: Colors.white)),
+                titleSpacing: 0.0,
+                title: Row(
                   children: [
-                    ConditionalBuilder(
-                      condition: SocialCubit.get(context).messages.isNotEmpty,
-                      builder: (context) => Expanded(
-                        child: ListView.separated(
-                          physics: const BouncingScrollPhysics(),
-                          itemBuilder: (context, index) {
-                            var message =
-                                SocialCubit.get(context).messages[index];
-
-                            if (SocialCubit.get(context).userModel.uId ==
-                                message.senderId) {
-                              return buildMyMessage(message);
-                            } else {
-                              return buildMessage(message);
-                            }
-                          },
-                          separatorBuilder: (context, index) =>
-                              const SizedBox(height: 10),
-                          itemCount: SocialCubit.get(context).messages.length,
-                        ),
-                      ),
-                      fallback: (context) => const Center(
-                        child: CircularProgressIndicator(),
-                      ),
+                    CircleAvatar(
+                      radius: 20.0,
+                      backgroundImage: NetworkImage(userModel.image),
                     ),
-                    const SizedBox(height: 6),
-                    Container(
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Colors.blueGrey),
-                          borderRadius: BorderRadius.circular(15.0)),
-                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                      child: Row(
-                        children: [
-                          const SizedBox(width: 10),
-                          Expanded(
-                              child: TextFormField(
-                            controller: messageController,
-                            onFieldSubmitted: (value) {
-                              if (formKey.currentState.validate()) {
-                                SocialCubit.get(context).sendMessage(
-                                  receiverId: userModel.uId,
-                                  dateTime: now.toString(),
-                                  time: DateTime.now().toString(),
-                                  text: value,
-                                );
-                                HapticFeedback.vibrate();
-                                messageController.clear();
-                              }
-                            },
-                            validator: (String value) {
-                              if (value.isEmpty) {
-                                return " Message is Empty";
-                              }
-                              return null;
-                            },
-                            decoration: const InputDecoration(
-                                border: InputBorder.none,
-                                hintText: 'Type your message here..'),
-                          )),
-                          Container(
-                            color: Colors.blueGrey,
-                            height: 70,
-                            child: MaterialButton(
-                              onLongPress: () => HapticFeedback.vibrate(),
-                              onPressed: () {
-                                if (formKey.currentState.validate()) {
-                                  SocialCubit.get(context).sendMessage(
-                                    receiverId: userModel.uId,
-                                    dateTime: now.toString(),
-                                    time: DateTime.now().toString(),
-                                    text: messageController.text,
-                                  );
-                                  HapticFeedback.vibrate();
-                                  messageController.clear();
-                                }
-                              },
-                              minWidth: 1.0,
-                              child: const Icon(
-                                IconBroken.Send,
-                                size: 20.0,
-                                color: Colors.white,
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
+                    const SizedBox(width: 15),
+                    Text(userModel.name),
                   ],
                 ),
               ),
-            ),
-          );
+              body: ConditionalBuilder(
+                condition: state is SocialGetMessageLoading,
+                builder: (context) =>
+                    const Center(child: CircularProgressIndicator()),
+                fallback: (context) => Form(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10),
+                    child: Column(
+                      children: [
+                        ConditionalBuilder(
+                            condition:
+                                SocialCubit.get(context).messages.isNotEmpty,
+                            builder: (context) => Expanded(
+                                  child: ListView.separated(
+                                    physics: const BouncingScrollPhysics(),
+                                    itemBuilder: (context, index) {
+                                      var message = SocialCubit.get(context)
+                                          .messages[index];
+
+                                      if (SocialCubit.get(context)
+                                              .userModel
+                                              .uId ==
+                                          message.senderId) {
+                                        return buildMyMessage(message);
+                                      } else {
+                                        return buildMessage(message);
+                                      }
+                                    },
+                                    separatorBuilder: (context, index) =>
+                                        const SizedBox(height: 10),
+                                    itemCount: SocialCubit.get(context)
+                                        .messages
+                                        .length,
+                                  ),
+                                ),
+                            fallback: (context) => Expanded(
+                                    child: Column(children: const [
+                                  Spacer(),
+                                  Center(
+                                      child: Text('Start Chat...',
+                                          style: TextStyle(fontSize: 20))),
+                                  Spacer(),
+                                ]))),
+                        Column(
+                          children: [
+                            const SizedBox(height: 6),
+                            Container(
+                              decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.blueGrey),
+                                  borderRadius: BorderRadius.circular(15.0)),
+                              clipBehavior: Clip.antiAliasWithSaveLayer,
+                              child: Row(
+                                children: [
+                                  const SizedBox(width: 10),
+                                  Expanded(
+                                      child: TextFormField(
+                                    controller: messageController,
+                                    onFieldSubmitted: (value) {
+                                      if (messageController.text != '') {
+                                        SocialCubit.get(context).sendMessage(
+                                          receiverId: userModel.uId,
+                                          dateTime: now.toString(),
+                                          time: DateTime.now().toString(),
+                                          text: value,
+                                        );
+                                        HapticFeedback.vibrate();
+                                        messageController.clear();
+                                      }
+                                    },
+                                    decoration: const InputDecoration(
+                                        border: InputBorder.none,
+                                        hintText: 'Type your message here..'),
+                                  )),
+                                  Container(
+                                    color: Colors.blueGrey,
+                                    height: 50,
+                                    child: MaterialButton(
+                                      onLongPress: () =>
+                                          HapticFeedback.vibrate(),
+                                      onPressed: () {
+                                        if (messageController.text != '') {
+                                          SocialCubit.get(context).sendMessage(
+                                            receiverId: userModel.uId,
+                                            dateTime: now.toString(),
+                                            time: DateTime.now().toString(),
+                                            text: messageController.text,
+                                          );
+                                          HapticFeedback.vibrate();
+                                          messageController.clear();
+                                        }
+                                      },
+                                      minWidth: 1.0,
+                                      child: const Icon(
+                                        IconBroken.Send,
+                                        size: 20.0,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ));
         },
       );
     });

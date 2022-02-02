@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 String uId = '';
-File profileImage;
-File coverImage;
+bool firstTime = true;
 
 var now = DateFormat.yMEd().add_jm().format(DateTime.now());
 

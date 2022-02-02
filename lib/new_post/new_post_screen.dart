@@ -166,9 +166,11 @@ class NewPostScreen extends StatelessWidget {
                                       if (socialCubit.postImage == null &&
                                           postController.text != '') {
                                         socialCubit.creatPost(
-                                            dateTime: now.toString(),
-                                            time: DateTime.now().toString(),
-                                            text: postController.text);
+                                          dateTime: now.toString(),
+                                          time: DateTime.now().toString(),
+                                          text: postController.text,
+                                        );
+
                                         showToast(
                                             text: 'Your post was shared.',
                                             state: ToastStates.success);
@@ -178,6 +180,7 @@ class NewPostScreen extends StatelessWidget {
                                             dateTime: now.toString(),
                                             time: DateTime.now().toString(),
                                             text: postController.text);
+
                                         showToast(
                                             text: 'Your post was shared.',
                                             state: ToastStates.success);

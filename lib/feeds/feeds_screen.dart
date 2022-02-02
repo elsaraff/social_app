@@ -26,54 +26,60 @@ class FeedsScreen extends StatelessWidget {
 
         return ConditionalBuilder(
             condition: userModel != null,
-            builder: (context) => SingleChildScrollView(
-                  physics: const BouncingScrollPhysics(),
-                  child: Column(
-                    children: [
-                      Card(
-                        clipBehavior: Clip.antiAliasWithSaveLayer,
-                        elevation: 10.0,
-                        margin: const EdgeInsets.all(8.0),
-                        child: Stack(
-                          alignment: AlignmentDirectional.bottomEnd,
-                          children: [
-                            const Image(
-                              image: AssetImage('assets/images/social.jpg'),
-                              fit: BoxFit.cover,
-                              height: 200,
-                              width: double.infinity,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: Container(
-                                  color: Colors.white70,
-                                  child: const Text(
-                                    'Communicate With Friends',
-                                    style: TextStyle(
-                                        color: Colors.blueGrey,
-                                        fontWeight: FontWeight.bold),
-                                  )),
-                            ),
-                          ],
-                        ),
-                      ),
-                      ListView.separated(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemBuilder: (context, index) => buildPostItem(
-                                SocialCubit.get(context).likedPosts,
-                                SocialCubit.get(context).postsLikes,
-                                SocialCubit.get(context).postsComments,
-                                SocialCubit.get(context).postsId[index],
-                                SocialCubit.get(context).posts[index],
-                                context,
-                                index,
+            builder: (context) => RefreshIndicator(
+                  color: Colors.blueGrey,
+                  displacement: 20,
+                  edgeOffset: 20,
+                  onRefresh: () => SocialCubit.get(context).getPosts(),
+                  child: SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    child: Column(
+                      children: [
+                        Card(
+                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                          elevation: 10.0,
+                          margin: const EdgeInsets.all(8.0),
+                          child: Stack(
+                            alignment: AlignmentDirectional.bottomEnd,
+                            children: [
+                              const Image(
+                                image: AssetImage('assets/images/social.jpg'),
+                                fit: BoxFit.cover,
+                                height: 200,
+                                width: double.infinity,
                               ),
-                          separatorBuilder: (context, index) =>
-                              const SizedBox(height: 10),
-                          itemCount: posts.length),
-                      const SizedBox(height: 10),
-                    ],
+                              Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: Container(
+                                    color: Colors.white70,
+                                    child: const Text(
+                                      'Communicate With Friends',
+                                      style: TextStyle(
+                                          color: Colors.blueGrey,
+                                          fontWeight: FontWeight.bold),
+                                    )),
+                              ),
+                            ],
+                          ),
+                        ),
+                        ListView.separated(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemBuilder: (context, index) => buildPostItem(
+                                  SocialCubit.get(context).likedPosts,
+                                  SocialCubit.get(context).postsLikes,
+                                  SocialCubit.get(context).postsComments,
+                                  SocialCubit.get(context).postsId[index],
+                                  SocialCubit.get(context).posts[index],
+                                  context,
+                                  index,
+                                ),
+                            separatorBuilder: (context, index) =>
+                                const SizedBox(height: 10),
+                            itemCount: posts.length),
+                        const SizedBox(height: 10),
+                      ],
+                    ),
                   ),
                 ),
             fallback: (context) =>

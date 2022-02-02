@@ -106,6 +106,7 @@ class SocialCubit extends Cubit<SocialStates> {
   }
 
   var picker = ImagePicker();
+  File profileImage;
 
   Future<void> getProfileImage() async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
@@ -146,6 +147,7 @@ class SocialCubit extends Cubit<SocialStates> {
     emit(SocialRemoveProfileImageState());
   }
 
+  File coverImage;
   Future<void> getCoverImage() async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
@@ -312,6 +314,7 @@ class SocialCubit extends Cubit<SocialStates> {
           debugPrint(error.toString());
         });
       }
+      //emit(SocialGetPostsSuccessState());
     }).catchError((error) {
       emit(SocialGetPostsErrorState(error.toString()));
       debugPrint(error.toString());
@@ -482,9 +485,9 @@ class SocialCubit extends Cubit<SocialStates> {
         for (var element in value.docs) {
           if (element.data()['uId'] != userModel.uId) {
             allUsers.add(SocialUserModel.fromJson(element.data()));
-            emit(SocialGetAllUsersSuccessState());
           }
         }
+        emit(SocialGetAllUsersSuccessState());
       }).catchError((error) {
         emit(SocialGetAllUsersErrorState(error.toString()));
         debugPrint(error.toString());
@@ -537,6 +540,8 @@ class SocialCubit extends Cubit<SocialStates> {
   void getMessages({
     @required String receiverId,
   }) {
+    emit(SocialGetMessageLoading());
+
     FirebaseFirestore.instance
         .collection('users')
         .doc(userModel.uId)
@@ -610,11 +615,14 @@ class SocialCubit extends Cubit<SocialStates> {
   void logOut(context) {
     CacheHelper.removeData(key: 'uId').then((value) {
       if (value) {
-        uId = null;
-        profileImage = null;
-        coverImage = null;
-        SocialCubit.get(context).messages = [];
+        firstTime = false;
+        CacheHelper.saveData(key: 'firstTime', value: firstTime);
+
+        currentIndex = 0;
+        //debugPrint(uId.toString());      //uId.toString()
         FirebaseAuth.instance.signOut();
+        uId = CacheHelper.getData(key: 'uId');
+        //debugPrint(uId.toString());     //null
 
         navigateAndFinish(context, const LoginScreen());
       }

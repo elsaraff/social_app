@@ -7,7 +7,6 @@ import 'package:social_application/shared/icons_broken.dart';
 import 'package:social_application/social_cubit/social_cubit.dart';
 import 'package:social_application/social_cubit/social_states.dart';
 import 'package:social_application/widgets/custom_text_form_field.dart';
-import 'package:social_application/widgets/functions.dart';
 
 var formKey = GlobalKey<FormState>();
 var nameController = TextEditingController();
@@ -78,10 +77,13 @@ class EditProfileScreen extends StatelessWidget {
                                                               Radius.circular(
                                                                   4)),
                                                   image: DecorationImage(
-                                                    image: coverImage == null
+                                                    image: socialCubit
+                                                                .coverImage ==
+                                                            null
                                                         ? NetworkImage(
                                                             userModel.cover)
-                                                        : FileImage(coverImage),
+                                                        : FileImage(socialCubit
+                                                            .coverImage),
                                                     fit: BoxFit.cover,
                                                   ))),
                                           onTap: () {
@@ -117,10 +119,12 @@ class EditProfileScreen extends StatelessWidget {
                                         child: InkWell(
                                           child: CircleAvatar(
                                             radius: 55,
-                                            backgroundImage: profileImage ==
+                                            backgroundImage: socialCubit
+                                                        .profileImage ==
                                                     null
                                                 ? NetworkImage(userModel.image)
-                                                : FileImage(profileImage),
+                                                : FileImage(
+                                                    socialCubit.profileImage),
                                           ),
                                           onTap: () {
                                             socialCubit.getProfileImage();
@@ -151,10 +155,11 @@ class EditProfileScreen extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(height: 10),
-                            if (profileImage != null || coverImage != null)
+                            if (socialCubit.profileImage != null ||
+                                socialCubit.coverImage != null)
                               Row(
                                 children: [
-                                  if (profileImage != null)
+                                  if (socialCubit.profileImage != null)
                                     Expanded(
                                       child: Column(
                                         children: [
@@ -187,10 +192,10 @@ class EditProfileScreen extends StatelessWidget {
                                         ],
                                       ),
                                     ),
-                                  if (profileImage != null &&
-                                      coverImage != null)
+                                  if (socialCubit.profileImage != null &&
+                                      socialCubit.coverImage != null)
                                     const SizedBox(width: 10),
-                                  if (coverImage != null)
+                                  if (socialCubit.coverImage != null)
                                     Expanded(
                                       child: Column(
                                         children: [
