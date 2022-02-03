@@ -2,6 +2,7 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:social_application/friends/profile_details_screen.dart';
 import 'package:social_application/models/message_model.dart';
 import 'package:social_application/models/user_model.dart';
 import 'package:social_application/shared/icons_broken.dart';
@@ -31,15 +32,21 @@ class ChatDetailsScreen extends StatelessWidget {
                     icon: const Icon(IconBroken.Arrow___Left,
                         color: Colors.white)),
                 titleSpacing: 0.0,
-                title: Row(
-                  children: [
-                    CircleAvatar(
-                      radius: 20.0,
-                      backgroundImage: NetworkImage(userModel.image),
-                    ),
-                    const SizedBox(width: 15),
-                    Text(userModel.name),
-                  ],
+                title: InkWell(
+                  onTap: () {
+                    navigateTo(
+                        context, ProfileDetailsScreen(userModel: userModel));
+                  },
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 20.0,
+                        backgroundImage: NetworkImage(userModel.image),
+                      ),
+                      const SizedBox(width: 15),
+                      Text(userModel.name),
+                    ],
+                  ),
                 ),
               ),
               body: ConditionalBuilder(

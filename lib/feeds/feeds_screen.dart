@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:social_application/feeds/comments_screen.dart';
 import 'package:social_application/feeds/likes_screen.dart';
+import 'package:social_application/widgets/image_wrapper.dart';
 import 'package:social_application/models/post_model.dart';
 import 'package:social_application/shared/icons_broken.dart';
 import 'package:social_application/social_cubit/social_cubit.dart';
@@ -23,7 +25,6 @@ class FeedsScreen extends StatelessWidget {
       builder: (context, state) {
         var userModel = SocialCubit.get(context).userModel;
         var posts = SocialCubit.get(context).posts;
-
         return ConditionalBuilder(
             condition: userModel != null,
             builder: (context) => RefreshIndicator(
@@ -281,15 +282,49 @@ class FeedsScreen extends StatelessWidget {
               if (postModel.postImage != '')
                 Padding(
                   padding: const EdgeInsets.only(top: 5.0),
-                  child: Container(
-                      height: 200,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(4.0),
-                          image: DecorationImage(
-                            image: NetworkImage(postModel.postImage),
-                            fit: BoxFit.contain,
-                          ))),
+                  child: InkWell(
+                    onTap: () {
+                      navigateTo(
+                        context,
+                        ImageWrapper(
+                          imageProvider: NetworkImage(postModel.postImage),
+                          backgroundDecoration:
+                              const BoxDecoration(color: Colors.black),
+                          minScale: PhotoViewComputedScale.contained * 1,
+                          maxScale: PhotoViewComputedScale.covered * 2,
+                          loadingBuilder: (context, event) {
+                            if (event == null) {
+                              return const Center(
+                                child: Text("Loading"),
+                              );
+                            }
+                            final value = event.cumulativeBytesLoaded /
+                                (event.expectedTotalBytes ??
+                                    event.cumulativeBytesLoaded);
+
+                            final percentage = (100 * value).floor();
+                            return Center(
+                              child: Column(
+                                children: [
+                                  const CircularProgressIndicator(),
+                                  Text("$percentage%"),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    },
+                    child: Container(
+                        height: 200,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(4.0),
+                            image: DecorationImage(
+                              image: NetworkImage(postModel.postImage),
+                              fit: BoxFit.contain,
+                            ))),
+                  ),
                 ),
               Row(
                 children: [
@@ -384,7 +419,6 @@ class FeedsScreen extends StatelessWidget {
                           InkWell(
                               onTap: () {
                                 if (formKey.currentState.validate()) {
-                                  debugPrint(commentController.text);
                                   SocialCubit.get(context).commentOnPost(
                                     name:
                                         SocialCubit.get(context).userModel.name,

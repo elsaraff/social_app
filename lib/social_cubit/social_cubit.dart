@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bloc/bloc.dart';
@@ -10,6 +11,7 @@ import 'package:social_application/chats/chats_screen.dart';
 import 'package:social_application/core/cache_helper.dart';
 import 'package:social_application/core/dio_helper.dart';
 import 'package:social_application/feeds/feeds_screen.dart';
+import 'package:social_application/friends/friends_screen.dart';
 import 'package:social_application/login/login_screen.dart';
 import 'package:social_application/models/comment_model.dart';
 import 'package:social_application/models/like_model.dart';
@@ -19,7 +21,6 @@ import 'package:social_application/models/user_model.dart';
 import 'package:social_application/new_post/new_post_screen.dart';
 import 'package:social_application/settings/settings_screen.dart';
 import 'package:social_application/social_cubit/social_states.dart';
-import 'package:social_application/users/users_screen.dart';
 import 'package:social_application/widgets/functions.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
@@ -48,7 +49,7 @@ class SocialCubit extends Cubit<SocialStates> {
     'Home',
     'Chats',
     '',
-    'Users',
+    'Friends',
     'Settings',
   ];
 
@@ -56,7 +57,7 @@ class SocialCubit extends Cubit<SocialStates> {
     const FeedsScreen(),
     const ChatsScreen(),
     const NewPostScreen(),
-    const UsersScreen(),
+    const FriendsScreen(),
     const SettingsScreen(),
   ];
   void changeBottomNav(int index) {
@@ -75,12 +76,55 @@ class SocialCubit extends Cubit<SocialStates> {
     emit(SocialNewPostState());
   }
 
+  bool announcement = true;
+
+  void getSwitchValue() {
+    FirebaseFirestore.instance.collection('users').doc(uId).get().then((value) {
+      announcement = value.data()['announcement'];
+      //debugPrint(announcement.toString());
+    });
+  }
+
+  void switchValue() {
+    FirebaseFirestore.instance.collection('users').doc(uId).get().then((value) {
+      announcement = value.data()['announcement'];
+
+      if (announcement == false) {
+        FirebaseMessaging.instance
+            .subscribeToTopic('announcement')
+            .then((value) {
+          updateUser(
+            announcement: true,
+            name: userModel.name,
+            phone: userModel.phone,
+            bio: userModel.bio,
+          );
+        });
+      }
+      if (announcement == true) {
+        FirebaseMessaging.instance
+            .unsubscribeFromTopic('announcement')
+            .then((value) {
+          updateUser(
+            announcement: false,
+            name: userModel.name,
+            phone: userModel.phone,
+            bio: userModel.bio,
+          );
+        });
+      }
+      announcement = !announcement;
+      emit(SwitchState());
+    });
+  }
+
 /*____________________________________________________________________________*/
 
   void updateUser({
     @required String name,
     @required String phone,
     @required String bio,
+    bool announcement,
     String image,
     String cover,
   }) {
@@ -92,6 +136,7 @@ class SocialCubit extends Cubit<SocialStates> {
       email: userModel.email,
       image: image ?? userModel.image,
       cover: cover ?? userModel.cover,
+      announcement: announcement ?? userModel.announcement,
     );
     FirebaseFirestore.instance
         .collection('users')
@@ -271,7 +316,6 @@ class SocialCubit extends Cubit<SocialStates> {
   Future<void> getPosts() async {
     allUsers = [];
     posts = [];
-    myPosts = [];
     postsId = [];
     likedPosts = [];
     postsLikes = ({});
@@ -283,9 +327,6 @@ class SocialCubit extends Cubit<SocialStates> {
         .get()
         .then((value) {
       for (var element in value.docs) {
-        if (element.data()['uId'] == FirebaseAuth.instance.currentUser.uid) {
-          myPosts.add(PostModel.fromJson(element.data()));
-        }
         element.reference.collection('comments').get().then((value) {
           //debugPrint('postId ' + element.id.toString());
           //debugPrint('postsComments ' + value.docs.length.toString());
@@ -409,7 +450,6 @@ class SocialCubit extends Cubit<SocialStates> {
         .doc(likeId)
         .delete()
         .then((value) {
-      debugPrint('likeId deleted');
       likedPosts.remove(postId);
       debugPrint(likedPosts.toString());
       getPostLikes(postId);
