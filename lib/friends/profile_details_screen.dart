@@ -1,105 +1,117 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:photo_view/photo_view.dart';
-import 'package:social_application/settings/edit_profile.dart';
 import 'package:social_application/feeds/comments_screen.dart';
 import 'package:social_application/feeds/likes_screen.dart';
+import 'package:social_application/widgets/image_wrapper.dart';
 import 'package:social_application/models/post_model.dart';
+import 'package:social_application/models/user_model.dart';
 import 'package:social_application/shared/icons_broken.dart';
 import 'package:social_application/social_cubit/social_cubit.dart';
 import 'package:social_application/social_cubit/social_states.dart';
 import 'package:social_application/widgets/functions.dart';
 
-import '../widgets/image_wrapper.dart';
+PostModel postModel;
 
-class SettingsScreen extends StatelessWidget {
-  const SettingsScreen({Key key}) : super(key: key);
+class ProfileDetailsScreen extends StatelessWidget {
+  final SocialUserModel userModel;
+  const ProfileDetailsScreen({Key key, this.userModel}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<SocialCubit, SocialStates>(
-      listener: (context, state) {},
-      builder: (context, state) {
-        var posts = SocialCubit.get(context).posts;
-        var userModel = SocialCubit.get(context).userModel;
-        var socialCubit = SocialCubit.get(context);
+    return Builder(builder: (context) {
+      return BlocConsumer<SocialCubit, SocialStates>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          var posts = SocialCubit.get(context).posts;
 
-        return RefreshIndicator(
-          color: Colors.blueGrey,
-          displacement: 20,
-          edgeOffset: 20,
-          onRefresh: () => socialCubit.getPosts(),
-          child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ConditionalBuilder(
-                  condition: userModel != null,
-                  fallback: (context) =>
-                      const Center(child: CircularProgressIndicator()),
-                  builder: (context) => Column(
-                    children: [
-                      SizedBox(
-                        height: 210,
-                        child: Stack(
-                          alignment: AlignmentDirectional.bottomCenter,
-                          children: [
-                            Align(
-                              alignment: AlignmentDirectional.topCenter,
-                              child: InkWell(
-                                onTap: () {
-                                  navigateTo(
-                                    context,
-                                    ImageWrapper(
-                                      imageProvider:
-                                          NetworkImage(userModel.cover),
-                                      backgroundDecoration: const BoxDecoration(
-                                          color: Colors.black),
-                                      minScale:
-                                          PhotoViewComputedScale.contained * 1,
-                                      maxScale:
-                                          PhotoViewComputedScale.covered * 2,
-                                      loadingBuilder: (context, event) {
-                                        if (event == null) {
-                                          return const Center(
-                                            child: Text("Loading"),
-                                          );
-                                        }
-                                        final value = event
-                                                .cumulativeBytesLoaded /
-                                            (event.expectedTotalBytes ??
-                                                event.cumulativeBytesLoaded);
-
-                                        final percentage =
-                                            (100 * value).floor();
-                                        return Center(
-                                          child: Column(
-                                            children: [
-                                              const CircularProgressIndicator(),
-                                              Text("$percentage%"),
-                                            ],
-                                          ),
+          return Scaffold(
+            appBar: AppBar(
+              leading: IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon:
+                      const Icon(IconBroken.Arrow___Left, color: Colors.white)),
+              titleSpacing: 0.0,
+              title: Text(
+                userModel.name + '\'s Profile',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            body: RefreshIndicator(
+              color: Colors.blueGrey,
+              displacement: 20,
+              edgeOffset: 20,
+              onRefresh: () => SocialCubit.get(context).getPosts(),
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 210,
+                      child: Stack(
+                        alignment: AlignmentDirectional.bottomCenter,
+                        children: [
+                          Align(
+                            alignment: AlignmentDirectional.topCenter,
+                            child: InkWell(
+                              onTap: () {
+                                navigateTo(
+                                  context,
+                                  ImageWrapper(
+                                    imageProvider:
+                                        NetworkImage(userModel.cover),
+                                    backgroundDecoration: const BoxDecoration(
+                                        color: Colors.black),
+                                    minScale:
+                                        PhotoViewComputedScale.contained * 1,
+                                    maxScale:
+                                        PhotoViewComputedScale.covered * 2,
+                                    loadingBuilder: (context, event) {
+                                      if (event == null) {
+                                        return const Center(
+                                          child: Text("Loading"),
                                         );
-                                      },
-                                    ),
-                                  );
-                                },
-                                child: Container(
-                                    height: 180,
-                                    width: double.infinity,
-                                    decoration: BoxDecoration(
-                                        borderRadius: const BorderRadius.only(
-                                            topRight: Radius.circular(4),
-                                            topLeft: Radius.circular(4)),
-                                        image: DecorationImage(
-                                          image: NetworkImage(userModel.cover),
-                                          fit: BoxFit.cover,
-                                        ))),
-                              ),
+                                      }
+                                      final value =
+                                          event.cumulativeBytesLoaded /
+                                              (event.expectedTotalBytes ??
+                                                  event.cumulativeBytesLoaded);
+
+                                      final percentage = (100 * value).floor();
+                                      return Center(
+                                        child: Column(
+                                          children: [
+                                            const CircularProgressIndicator(),
+                                            Text("$percentage%"),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                  height: 180,
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                      borderRadius: const BorderRadius.only(
+                                          topRight: Radius.circular(4),
+                                          topLeft: Radius.circular(4)),
+                                      image: DecorationImage(
+                                        image: NetworkImage(userModel.cover),
+                                        fit: BoxFit.cover,
+                                      ))),
                             ),
-                            InkWell(
+                          ),
+                          CircleAvatar(
+                            radius: 59,
+                            backgroundColor: Colors.white,
+                            child: InkWell(
                               onTap: () {
                                 navigateTo(
                                   context,
@@ -137,194 +149,164 @@ class SettingsScreen extends StatelessWidget {
                                 );
                               },
                               child: CircleAvatar(
-                                radius: 59,
-                                backgroundColor: Colors.white,
-                                child: InkWell(
-                                  child: CircleAvatar(
-                                      radius: 55,
-                                      backgroundImage:
-                                          NetworkImage(userModel.image)),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 5.0),
-                      Text(userModel.name,
-                          style: const TextStyle(
-                            fontSize: 20,
-                            height: 1.6,
-                            fontWeight: FontWeight.bold,
-                          )),
-                      InkWell(
-                        child: Text(
-                          userModel.bio.toString(),
-                          style: const TextStyle(height: 1.6),
-                          maxLines: 3,
-                          textAlign: TextAlign.center,
-                        ),
-                        onTap: () {},
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Container(
-                            width: double.infinity,
-                            height: 2.0,
-                            color: Colors.grey[300]),
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: InkWell(
-                              child: Column(
-                                children: const [
-                                  Text('157',
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          height: 1.6,
-                                          fontWeight: FontWeight.bold)),
-                                  Text('Posts',
-                                      style: TextStyle(
-                                        fontSize: 15,
-                                        height: 1.6,
-                                      )),
-                                ],
-                              ),
-                              onTap: () {},
+                                  radius: 55,
+                                  backgroundImage:
+                                      NetworkImage(userModel.image)),
                             ),
-                          ),
-                          Expanded(
-                            child: InkWell(
-                              child: Column(
-                                children: const [
-                                  Text('57',
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          height: 1.6,
-                                          fontWeight: FontWeight.bold)),
-                                  Text('Photos',
-                                      style: TextStyle(
-                                        fontSize: 15,
-                                        height: 1.6,
-                                      )),
-                                ],
-                              ),
-                              onTap: () {},
-                            ),
-                          ),
-                          Expanded(
-                            child: InkWell(
-                              child: Column(
-                                children: const [
-                                  Text('396',
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          height: 1.6,
-                                          fontWeight: FontWeight.bold)),
-                                  Text('Followers',
-                                      style: TextStyle(
-                                        fontSize: 15,
-                                        height: 1.6,
-                                      )),
-                                ],
-                              ),
-                              onTap: () {},
-                            ),
-                          ),
-                          Expanded(
-                            child: InkWell(
-                              child: Column(
-                                children: const [
-                                  Text('812',
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          height: 1.6,
-                                          fontWeight: FontWeight.bold)),
-                                  Text('Following',
-                                      style: TextStyle(
-                                        fontSize: 15,
-                                        height: 1.6,
-                                      )),
-                                ],
-                              ),
-                              onTap: () {},
-                            ),
-                          ),
+                          )
                         ],
                       ),
-                      const SizedBox(height: 10),
-                      SizedBox(
-                        height: 33,
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: OutlinedButton(
-                                onPressed: () {},
-                                child: const Text('Add Photos',
-                                    style: TextStyle(
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.blueGrey)),
-                              ),
-                            ),
-                            const SizedBox(width: 10),
-                            OutlinedButton(
-                              onPressed: () {
-                                SocialCubit.get(context).getSwitchValue();
-                                navigateTo(context, const EditProfileScreen());
-                              },
-                              child: const Icon(IconBroken.Edit, size: 17),
-                            ),
-                            const SizedBox(width: 10),
-                            OutlinedButton(
-                              onPressed: () {
-                                socialCubit.logOut(context);
-                              },
-                              child: const Icon(IconBroken.Logout, size: 17),
-                            )
-                          ],
-                        ),
+                    ),
+                    const SizedBox(height: 5.0),
+                    Text(userModel.name,
+                        style: const TextStyle(
+                          fontSize: 20,
+                          height: 1.6,
+                          fontWeight: FontWeight.bold,
+                        )),
+                    InkWell(
+                      child: Text(
+                        userModel.bio.toString(),
+                        style: const TextStyle(height: 1.6),
+                        maxLines: 3,
+                        textAlign: TextAlign.center,
                       ),
-                      const SizedBox(height: 20),
-                      ConditionalBuilder(
-                          condition: userModel != null,
-                          builder: (context) => Column(
-                                children: [
-                                  ListView.separated(
-                                      shrinkWrap: true,
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      itemBuilder: (context, index) =>
-                                          buildPostItem(
-                                            SocialCubit.get(context).likedPosts,
-                                            SocialCubit.get(context).postsLikes,
-                                            SocialCubit.get(context)
-                                                .postsComments,
-                                            SocialCubit.get(context)
-                                                .postsId[index],
-                                            SocialCubit.get(context)
-                                                .posts[index],
-                                            context,
-                                            userModel,
-                                            index,
-                                          ),
-                                      separatorBuilder: (context, index) =>
-                                          const SizedBox(height: 10),
-                                      itemCount: posts.length),
-                                  const SizedBox(height: 10),
-                                ],
-                              ),
-                          fallback: (context) =>
-                              const Center(child: CircularProgressIndicator())),
-                    ],
-                  ),
-                )),
-          ),
-        );
-      },
-    );
+                      onTap: () {},
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Container(
+                          width: double.infinity,
+                          height: 2.0,
+                          color: Colors.grey[300]),
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: InkWell(
+                            child: Column(
+                              children: const [
+                                Text('157',
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        height: 1.6,
+                                        fontWeight: FontWeight.bold)),
+                                Text('Posts',
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      height: 1.6,
+                                    )),
+                              ],
+                            ),
+                            onTap: () {},
+                          ),
+                        ),
+                        Expanded(
+                          child: InkWell(
+                            child: Column(
+                              children: const [
+                                Text('57',
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        height: 1.6,
+                                        fontWeight: FontWeight.bold)),
+                                Text('Photos',
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      height: 1.6,
+                                    )),
+                              ],
+                            ),
+                            onTap: () {},
+                          ),
+                        ),
+                        Expanded(
+                          child: InkWell(
+                            child: Column(
+                              children: const [
+                                Text('396',
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        height: 1.6,
+                                        fontWeight: FontWeight.bold)),
+                                Text('Followers',
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      height: 1.6,
+                                    )),
+                              ],
+                            ),
+                            onTap: () {},
+                          ),
+                        ),
+                        Expanded(
+                          child: InkWell(
+                            child: Column(
+                              children: const [
+                                Text('812',
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        height: 1.6,
+                                        fontWeight: FontWeight.bold)),
+                                Text('Following',
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      height: 1.6,
+                                    )),
+                              ],
+                            ),
+                            onTap: () {},
+                          ),
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Container(
+                          width: double.infinity,
+                          height: 2.0,
+                          color: Colors.grey[300]),
+                    ),
+                    ConditionalBuilder(
+                        condition: userModel != null,
+                        builder: (context) => Column(
+                              children: [
+                                ListView.separated(
+                                    shrinkWrap: true,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    itemBuilder: (context, index) =>
+                                        buildPostItem(
+                                          SocialCubit.get(context).likedPosts,
+                                          SocialCubit.get(context).postsLikes,
+                                          SocialCubit.get(context)
+                                              .postsComments,
+                                          SocialCubit.get(context)
+                                              .postsId[index],
+                                          SocialCubit.get(context).posts[index],
+                                          context,
+                                          userModel,
+                                          index,
+                                        ),
+                                    separatorBuilder: (context, index) =>
+                                        const SizedBox(height: 10),
+                                    itemCount: posts.length),
+                                const SizedBox(height: 10),
+                              ],
+                            ),
+                        fallback: (context) =>
+                            const Center(child: CircularProgressIndicator())),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+      );
+    });
   }
+
+//     if (userModel.uId == postModel.uId)
 
   Widget buildPostItem(
     List<String> likedPosts,
@@ -388,72 +370,6 @@ class SettingsScreen extends StatelessWidget {
                                 ),
                               ),
                             ])),
-                        PopupMenuButton(
-                            itemBuilder: (BuildContext context) =>
-                                <PopupMenuEntry>[
-                                  PopupMenuItem(
-                                    child: TextButton(
-                                      child: const Text('Remove Post'),
-                                      onPressed: () {
-                                        var alert = AlertDialog(
-                                          title: const Text('Alert ! '),
-                                          content: SizedBox(
-                                            width: 150,
-                                            height: 150,
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.end,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          bottom: 10.0),
-                                                  child: Container(
-                                                      color: Colors.blueGrey,
-                                                      height: 1,
-                                                      width: double.infinity),
-                                                ),
-                                                const Text(
-                                                    'Are you sure you want to delete the post ?'),
-                                                const Spacer(),
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceAround,
-                                                  children: [
-                                                    ElevatedButton(
-                                                      onPressed: () {
-                                                        Navigator.pop(context);
-                                                      },
-                                                      child: const Text('NO'),
-                                                    ),
-                                                    ElevatedButton(
-                                                      onPressed: () {
-                                                        SocialCubit.get(context)
-                                                            .deletePost(postId);
-                                                        Navigator.pop(context);
-                                                      },
-                                                      child: const Text('YES'),
-                                                    )
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        );
-                                        Navigator.pop(context);
-                                        showDialog(
-                                            barrierColor:
-                                                Colors.grey.withOpacity(.2),
-                                            barrierLabel: 'alert',
-                                            context: context,
-                                            builder: (context) => alert);
-                                      },
-                                    ),
-                                  ),
-                                ]),
                       ],
                     ),
                     Padding(
@@ -669,6 +585,7 @@ class SettingsScreen extends StatelessWidget {
                                 InkWell(
                                     onTap: () {
                                       if (formKey.currentState.validate()) {
+                                        debugPrint(commentController.text);
                                         SocialCubit.get(context).commentOnPost(
                                           name: SocialCubit.get(context)
                                               .userModel

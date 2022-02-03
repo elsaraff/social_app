@@ -6,6 +6,8 @@ class SocialChangeBottomNavState extends SocialStates {}
 
 class SocialNewPostState extends SocialStates {}
 
+class SwitchState extends SocialStates {}
+
 //GetUser
 
 class SocialGetUserLoadingState extends SocialStates {}

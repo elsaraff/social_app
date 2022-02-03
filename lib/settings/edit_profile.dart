@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -293,9 +294,32 @@ class EditProfileScreen extends StatelessWidget {
                                       ),
                                     )),
                               ),
-                              const SizedBox(height: 5),
-                              if (state is SocialUserUpdateLoadingState)
-                                const LinearProgressIndicator(),
+                              const SizedBox(height: 20),
+                              Row(
+                                children: [
+                                  const Expanded(
+                                      flex: 4,
+                                      child: Text(
+                                        'Subscribe our Announcement',
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold),
+                                      )),
+                                  const SizedBox(width: 5),
+                                  Expanded(
+                                    flex: 1,
+                                    child: CupertinoSwitch(
+                                      activeColor: Colors.blueGrey[200],
+                                      onChanged: (value) {
+                                        SocialCubit.get(context).switchValue();
+                                        debugPrint(value.toString());
+                                      },
+                                      value:
+                                          SocialCubit.get(context).announcement,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ])
                           ],
                         ),

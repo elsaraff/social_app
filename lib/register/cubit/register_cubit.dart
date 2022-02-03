@@ -64,6 +64,7 @@ class RegisterCubit extends Cubit<RegisterStates> {
       phone: phone,
       bio: 'write your bio ..',
       uId: uId,
+      announcement: true,
       image:
           'https://www.minervastrategies.com/wp-content/uploads/2016/03/default-avatar.jpg',
       cover:

@@ -39,6 +39,10 @@ Future<void> messageNotification({
     options: Options(headers: headers),
   )
       .then((value) {
+    // debugPrint(receiverToken);
+    //debugPrint(sender);
+    // debugPrint(message);
+
     //debugPrint('value ' + value.data.toString());
   });
 }

@@ -184,8 +184,6 @@ class NewPostScreen extends StatelessWidget {
                                         showToast(
                                             text: 'Your post was shared.',
                                             state: ToastStates.success);
-                                      } else {
-                                        debugPrint('Post is Empty');
                                       }
                                     },
                                     child: Row(

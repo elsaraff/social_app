@@ -1,14 +1,14 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:social_application/chats/chat_details_screen.dart';
+import 'package:social_application/friends/profile_details_screen.dart';
 import 'package:social_application/models/user_model.dart';
 import 'package:social_application/social_cubit/social_cubit.dart';
 import 'package:social_application/social_cubit/social_states.dart';
 import 'package:social_application/widgets/functions.dart';
 
-class ChatsScreen extends StatelessWidget {
-  const ChatsScreen({Key key}) : super(key: key);
+class FriendsScreen extends StatelessWidget {
+  const FriendsScreen({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class ChatsScreen extends StatelessWidget {
       builder: (context, state) {
         var users = SocialCubit.get(context).allUsers;
         return SingleChildScrollView(
-           physics: const BouncingScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: ConditionalBuilder(
@@ -26,7 +26,7 @@ class ChatsScreen extends StatelessWidget {
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) =>
-                      buildChatItem(users[index], context),
+                      buildProfileItem(users[index], context),
                   separatorBuilder: (context, index) => Container(
                         color: Colors.blueGrey,
                         width: double.infinity,
@@ -43,9 +43,9 @@ class ChatsScreen extends StatelessWidget {
     );
   }
 
-  Widget buildChatItem(SocialUserModel model, context) => InkWell(
+  Widget buildProfileItem(SocialUserModel model, context) => InkWell(
         onTap: () {
-          navigateTo(context, ChatDetailsScreen(userModel: model));
+          navigateTo(context, ProfileDetailsScreen(userModel: model));
         },
         child: Padding(
           padding: const EdgeInsets.all(10.0),

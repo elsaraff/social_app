@@ -56,7 +56,7 @@ class HomeScreen extends StatelessWidget {
                         color: Colors.white, size: 0.0001),
                     label: "post"),
                 BottomNavigationBarItem(
-                    icon: Icon(IconBroken.User), label: "Users"),
+                    icon: Icon(IconBroken.User1), label: "Friends"),
                 BottomNavigationBarItem(
                     icon: Icon(IconBroken.Setting), label: "Settings")
               ],
