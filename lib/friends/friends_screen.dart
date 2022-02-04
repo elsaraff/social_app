@@ -1,8 +1,6 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:social_application/friends/profile_details_screen.dart';
-import 'package:social_application/models/user_model.dart';
 import 'package:social_application/social_cubit/social_cubit.dart';
 import 'package:social_application/social_cubit/social_states.dart';
 import 'package:social_application/widgets/functions.dart';
@@ -42,26 +40,4 @@ class FriendsScreen extends StatelessWidget {
       },
     );
   }
-
-  Widget buildProfileItem(SocialUserModel model, context) => InkWell(
-        onTap: () {
-          navigateTo(context, ProfileDetailsScreen(userModel: model));
-        },
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Row(
-            children: [
-              CircleAvatar(
-                  radius: 25, backgroundImage: NetworkImage(model.image)),
-              const SizedBox(width: 15),
-              Text(model.name,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    height: 1.6,
-                    fontWeight: FontWeight.bold,
-                  )),
-            ],
-          ),
-        ),
-      );
 }

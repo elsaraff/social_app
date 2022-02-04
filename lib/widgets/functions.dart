@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:social_application/chats/chat_details_screen.dart';
+import 'package:social_application/friends/profile_details_screen.dart';
+import 'package:social_application/models/user_model.dart';
 
 String uId = '';
 String token = '';
@@ -22,13 +25,6 @@ navigateAndFinish(context, widget) {
   );
 }
 
-void printFullText(String text) {
-  final pattern = RegExp('.{1,800}'); // 800 is the size of each chunk
-  pattern
-      .allMatches(text)
-      .forEach((match) => debugPrint(match.group(0).toString()));
-}
-
 Widget myDivider() => Column(
       children: [
         const SizedBox(height: 5),
@@ -38,4 +34,35 @@ Widget myDivider() => Column(
               borderRadius: BorderRadius.circular(5.0), color: Colors.red),
         ),
       ],
+    );
+
+Widget buildProfileItem(
+  SocialUserModel model,
+  context, {
+  isChat = false,
+}) =>
+    InkWell(
+      onTap: () {
+        if (isChat) {
+          navigateTo(context, ChatDetailsScreen(userModel: model));
+        } else {
+          navigateTo(context, ProfileDetailsScreen(userModel: model));
+        }
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Row(
+          children: [
+            CircleAvatar(
+                radius: 25, backgroundImage: NetworkImage(model.image)),
+            const SizedBox(width: 15),
+            Text(model.name,
+                style: const TextStyle(
+                  fontSize: 14,
+                  height: 1.6,
+                  fontWeight: FontWeight.bold,
+                )),
+          ],
+        ),
+      ),
     );
