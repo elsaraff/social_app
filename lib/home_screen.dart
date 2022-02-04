@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_application/new_post/new_post_screen.dart';
+import 'package:social_application/search/search.dart';
 import 'package:social_application/shared/icons_broken.dart';
 import 'package:social_application/social_cubit/social_cubit.dart';
 import 'package:social_application/social_cubit/social_states.dart';
@@ -30,7 +31,13 @@ class HomeScreen extends StatelessWidget {
             actions: [
               IconButton(
                   onPressed: () {}, icon: const Icon(IconBroken.Notification)),
-              IconButton(onPressed: () {}, icon: const Icon(IconBroken.Search)),
+              IconButton(
+                  onPressed: () {
+                    searchController.clear();
+                    socialCubit.search = [];
+                    navigateTo(context, const SearchInput());
+                  },
+                  icon: const Icon(IconBroken.Search)),
             ],
           ),
           body: socialCubit.screens[socialCubit.currentIndex],

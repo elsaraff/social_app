@@ -22,14 +22,22 @@ class SocialGetUserErrorState extends SocialStates {
 
 //GetAllUsers
 
-class SocialGetAllUsersLoadingState extends SocialStates {}
-
 class SocialGetAllUsersSuccessState extends SocialStates {}
 
 class SocialGetAllUsersErrorState extends SocialStates {
   final String error;
 
   SocialGetAllUsersErrorState(this.error);
+}
+
+//GetSearch
+
+class SocialGetSearchSuccessState extends SocialStates {}
+
+class SocialGetSearchErrorState extends SocialStates {
+  final String error;
+
+  SocialGetSearchErrorState(this.error);
 }
 
 //UserUpdate

@@ -536,6 +536,30 @@ class SocialCubit extends Cubit<SocialStates> {
     }
   }
 
+  List<dynamic> search = [];
+
+  void getSearch(String name) {
+    search = [];
+    if (search.isEmpty) {
+      FirebaseFirestore.instance.collection('users').get().then((value) {
+        for (var element in value.docs) {
+          if (element['name'].startsWith(name) && name != '') {
+            search = [];
+            search.add(SocialUserModel.fromJson(element.data()));
+            emit(SocialGetSearchSuccessState());
+          }
+        }
+        if (name == '') {
+          search = [];
+        }
+        emit(SocialGetSearchSuccessState());
+      }).catchError((error) {
+        emit(SocialGetSearchErrorState(error.toString()));
+        debugPrint(error.toString());
+      });
+    }
+  }
+
   void sendMessage({
     @required String receiverId,
     @required String dateTime,
