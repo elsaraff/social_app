@@ -19,7 +19,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp();
-  token = await FirebaseMessaging.instance.getToken();
+  token = (await FirebaseMessaging.instance.getToken())!;
   //debugPrint('Token ' + token);
 
   FirebaseMessaging.onMessage.listen((event) {
@@ -41,7 +41,7 @@ void main() async {
   uId = CacheHelper.getData(key: 'uId');
   firstTime = CacheHelper.getData(key: 'firstTime');
 
-  Widget startWidget;
+  Widget? startWidget;
 
   if (uId != null) {
     startWidget = const HomeScreen();
@@ -56,9 +56,9 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  final Widget startWidget;
+  final Widget? startWidget;
 
-  const MyApp({Key key, this.startWidget}) : super(key: key);
+  const MyApp({Key? key, this.startWidget}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

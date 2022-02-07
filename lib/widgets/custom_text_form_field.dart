@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
 Widget customTextFormField({
-  @required TextEditingController controller,
-  @required TextInputType type,
+  required TextEditingController controller,
+  required TextInputType type,
   bool isPassword = false,
-  @required Function validate,
-  Function onSubmit,
-  String label,
-  String hint,
-  IconData prefix,
-  IconData suffix,
-  Function suffixPressed,
+  Function? validate,
+  Function? onSubmit,
+  String? label,
+  String? hint,
+  IconData? prefix,
+  IconData? suffix,
+  Function? suffixPressed,
 }) =>
     Container(
       width: double.infinity,
@@ -20,8 +20,12 @@ Widget customTextFormField({
         controller: controller,
         keyboardType: type,
         obscureText: isPassword,
-        validator: validate,
-        onFieldSubmitted: onSubmit,
+        validator: (v) {
+          validate!(v);
+        },
+        onFieldSubmitted: (s) {
+          onSubmit!(s);
+        },
         decoration: InputDecoration(
           labelText: label,
           hintText: hint,
@@ -31,7 +35,9 @@ Widget customTextFormField({
           ),
           suffixIcon: suffix != null
               ? IconButton(
-                  onPressed: suffixPressed,
+                  onPressed: () {
+                    suffixPressed!();
+                  },
                   icon: Icon(
                     suffix,
                     color: Colors.blueGrey,

@@ -1,18 +1,18 @@
 class LikeModel {
-  String postId;
-  String uId;
-  String name;
-  String image;
-  bool like;
-  String time;
+  late String postId;
+  late String uId;
+  late  String name;
+  late  String image;
+  late  bool like;
+  late  String time;
 
   LikeModel({
-    this.name,
-    this.image,
-    this.uId,
-    this.postId,
-    this.like,
-    this.time,
+    required this.name,
+    required this.image,
+    required this.uId,
+    required this.postId,
+    required this.like,
+    required this.time,
   });
 
   LikeModel.fromJson(Map<String, dynamic> json) {

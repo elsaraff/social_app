@@ -8,6 +8,7 @@ import 'package:social_application/shared/icons_broken.dart';
 import 'package:social_application/social_cubit/social_cubit.dart';
 import 'package:social_application/social_cubit/social_states.dart';
 import 'package:social_application/widgets/custom_text_form_field.dart';
+import 'package:social_application/widgets/functions.dart';
 
 var formKey = GlobalKey<FormState>();
 var nameController = TextEditingController();
@@ -15,7 +16,7 @@ var bioController = TextEditingController();
 var phoneController = TextEditingController();
 
 class EditProfileScreen extends StatelessWidget {
-  const EditProfileScreen({Key key}) : super(key: key);
+  const EditProfileScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,7 @@ class EditProfileScreen extends StatelessWidget {
       listener: (context, state) {},
       builder: (context, state) {
         var socialCubit = SocialCubit.get(context);
-        var userModel = SocialCubit.get(context).userModel;
+        var userModel = SocialCubit.get(context).userModel!;
 
         nameController.text = userModel.name;
         bioController.text = userModel.bio;
@@ -44,7 +45,7 @@ class EditProfileScreen extends StatelessWidget {
             titleSpacing: 5.0,
           ),
           body: ConditionalBuilder(
-              condition: userModel != null,
+              condition: true,
               fallback: (context) =>
                   const Center(child: CircularProgressIndicator()),
               builder: (context) => SingleChildScrollView(
@@ -78,13 +79,12 @@ class EditProfileScreen extends StatelessWidget {
                                                               Radius.circular(
                                                                   4)),
                                                   image: DecorationImage(
-                                                    image: socialCubit
-                                                                .coverImage ==
-                                                            null
-                                                        ? NetworkImage(
-                                                            userModel.cover)
-                                                        : FileImage(socialCubit
-                                                            .coverImage),
+                                                    image: (coverImage == null
+                                                            ? NetworkImage(
+                                                                userModel.cover)
+                                                            : FileImage(
+                                                                coverImage!))
+                                                        as ImageProvider,
                                                     fit: BoxFit.cover,
                                                   ))),
                                           onTap: () {
@@ -119,14 +119,14 @@ class EditProfileScreen extends StatelessWidget {
                                         backgroundColor: Colors.white,
                                         child: InkWell(
                                           child: CircleAvatar(
-                                            radius: 55,
-                                            backgroundImage: socialCubit
-                                                        .profileImage ==
-                                                    null
-                                                ? NetworkImage(userModel.image)
-                                                : FileImage(
-                                                    socialCubit.profileImage),
-                                          ),
+                                              radius: 55,
+                                              backgroundImage:
+                                                  (profileImage == null
+                                                          ? NetworkImage(
+                                                              userModel.image)
+                                                          : FileImage(
+                                                              profileImage!))
+                                                      as ImageProvider),
                                           onTap: () {
                                             socialCubit.getProfileImage();
                                           },
@@ -156,11 +156,10 @@ class EditProfileScreen extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(height: 10),
-                            if (socialCubit.profileImage != null ||
-                                socialCubit.coverImage != null)
+                            if (profileImage != null || coverImage != null)
                               Row(
                                 children: [
-                                  if (socialCubit.profileImage != null)
+                                  if (profileImage != null)
                                     Expanded(
                                       child: Column(
                                         children: [
@@ -193,10 +192,10 @@ class EditProfileScreen extends StatelessWidget {
                                         ],
                                       ),
                                     ),
-                                  if (socialCubit.profileImage != null &&
-                                      socialCubit.coverImage != null)
+                                  if (profileImage != null &&
+                                      coverImage != null)
                                     const SizedBox(width: 10),
-                                  if (socialCubit.coverImage != null)
+                                  if (coverImage != null)
                                     Expanded(
                                       child: Column(
                                         children: [
@@ -253,7 +252,7 @@ class EditProfileScreen extends StatelessWidget {
                                 labelText: 'Bio',
                               ),
                               validator: (value) {
-                                if (value.isEmpty) {
+                                if (value!.isEmpty) {
                                   return "Bio is empty ";
                                 }
                                 return null;
@@ -280,7 +279,7 @@ class EditProfileScreen extends StatelessWidget {
                                     color: Colors.blueGrey),
                                 child: MaterialButton(
                                     onPressed: () {
-                                      if (formKey.currentState.validate()) {
+                                      if (formKey.currentState!.validate()) {
                                         socialCubit.updateUser(
                                             name: nameController.text,
                                             phone: phoneController.text,

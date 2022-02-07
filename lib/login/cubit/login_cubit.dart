@@ -24,8 +24,8 @@ class LoginCubit extends Cubit<LoginStates> {
   }
 
   void userLogin({
-    @required String email,
-    @required String password,
+    required String email,
+    required String password,
   }) {
     emit(SocialLoginLoadingState());
 
@@ -33,7 +33,7 @@ class LoginCubit extends Cubit<LoginStates> {
         .signInWithEmailAndPassword(email: email, password: password)
         .then((value) {
       showToast(text: 'Hello', state: ToastStates.success);
-      emit(SocialLoginSuccessState(value.user.uid.toString()));
+      emit(SocialLoginSuccessState(value.user!.uid.toString()));
     }).catchError((error) {
       showToast(text: error.toString(), state: ToastStates.error);
       emit(SocialLoginErrorState(error.toString()));

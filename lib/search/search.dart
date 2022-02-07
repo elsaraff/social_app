@@ -6,10 +6,9 @@ import 'package:social_application/social_cubit/social_states.dart';
 import 'package:social_application/widgets/functions.dart';
 
 var searchController = TextEditingController();
-String hintText;
 
 class SearchInput extends StatelessWidget {
-  const SearchInput({Key key}) : super(key: key);
+  const SearchInput({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

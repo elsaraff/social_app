@@ -1,12 +1,17 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:social_application/chats/chat_details_screen.dart';
 import 'package:social_application/friends/profile_details_screen.dart';
 import 'package:social_application/models/user_model.dart';
 
-String uId = '';
-String token = '';
-bool firstTime = true;
+String? uId = '';
+File? coverImage;
+File? profileImage;
+
+String? token = '';
+bool? firstTime = true;
 
 var now = DateFormat.yMEd().add_jm().format(DateTime.now());
 
