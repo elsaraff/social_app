@@ -13,11 +13,9 @@ import 'package:social_application/social_cubit/social_cubit.dart';
 import 'package:social_application/social_cubit/social_states.dart';
 import 'package:social_application/widgets/functions.dart';
 
-PostModel postModel;
-
 class ProfileDetailsScreen extends StatelessWidget {
-  final SocialUserModel userModel;
-  const ProfileDetailsScreen({Key key, this.userModel}) : super(key: key);
+  final SocialUserModel? userModel;
+  const ProfileDetailsScreen({Key? key, this.userModel}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +35,7 @@ class ProfileDetailsScreen extends StatelessWidget {
                       const Icon(IconBroken.Arrow___Left, color: Colors.white)),
               titleSpacing: 0.0,
               title: Text(
-                userModel.name + '\'s Profile',
+                userModel!.name + '\'s Profile',
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -64,7 +62,7 @@ class ProfileDetailsScreen extends StatelessWidget {
                                   context,
                                   ImageWrapper(
                                     imageProvider:
-                                        NetworkImage(userModel.cover),
+                                        NetworkImage(userModel!.cover),
                                     backgroundDecoration: const BoxDecoration(
                                         color: Colors.black),
                                     minScale:
@@ -103,7 +101,7 @@ class ProfileDetailsScreen extends StatelessWidget {
                                           topRight: Radius.circular(4),
                                           topLeft: Radius.circular(4)),
                                       image: DecorationImage(
-                                        image: NetworkImage(userModel.cover),
+                                        image: NetworkImage(userModel!.cover),
                                         fit: BoxFit.cover,
                                       ))),
                             ),
@@ -117,7 +115,7 @@ class ProfileDetailsScreen extends StatelessWidget {
                                   context,
                                   ImageWrapper(
                                     imageProvider:
-                                        NetworkImage(userModel.image),
+                                        NetworkImage(userModel!.image),
                                     backgroundDecoration: const BoxDecoration(
                                         color: Colors.black),
                                     minScale:
@@ -151,14 +149,14 @@ class ProfileDetailsScreen extends StatelessWidget {
                               child: CircleAvatar(
                                   radius: 55,
                                   backgroundImage:
-                                      NetworkImage(userModel.image)),
+                                      NetworkImage(userModel!.image)),
                             ),
                           )
                         ],
                       ),
                     ),
                     const SizedBox(height: 5.0),
-                    Text(userModel.name,
+                    Text(userModel!.name,
                         style: const TextStyle(
                           fontSize: 20,
                           height: 1.6,
@@ -166,7 +164,7 @@ class ProfileDetailsScreen extends StatelessWidget {
                         )),
                     InkWell(
                       child: Text(
-                        userModel.bio.toString(),
+                        userModel!.bio.toString(),
                         style: const TextStyle(height: 1.6),
                         maxLines: 3,
                         textAlign: TextAlign.center,
@@ -306,7 +304,7 @@ class ProfileDetailsScreen extends StatelessWidget {
     });
   }
 
-//     if (userModel.uId == postModel.uId)
+//     if (userModel!.uId == postModel.uId)
 
   Widget buildPostItem(
     List<String> likedPosts,
@@ -323,7 +321,7 @@ class ProfileDetailsScreen extends StatelessWidget {
 
     return Column(
       children: [
-        if (userModel.uId == postModel.uId)
+        if (userModel!.uId == postModel.uId)
           Form(
             key: formKey,
             child: Card(
@@ -492,7 +490,7 @@ class ProfileDetailsScreen extends StatelessWidget {
                           child: InkWell(
                             onTap: () {
                               SocialCubit.get(context).getPostLikes(postId);
-                              if (likes[postId] >= 1) {
+                              if (likes[postId]! >= 1) {
                                 Navigator.push(context,
                                     ScaleTransition1(const LikesScreen()));
                               }
@@ -520,7 +518,7 @@ class ProfileDetailsScreen extends StatelessWidget {
                           child: InkWell(
                             onTap: () {
                               SocialCubit.get(context).getPostComments(postId);
-                              if (comments[postId] >= 1) {
+                              if (comments[postId]! >= 1) {
                                 Navigator.push(context,
                                     ScaleTransition2(const CommentsScreen()));
                               }
@@ -559,7 +557,7 @@ class ProfileDetailsScreen extends StatelessWidget {
                                     radius: 19,
                                     backgroundImage: NetworkImage(
                                         SocialCubit.get(context)
-                                            .userModel
+                                            .userModel!
                                             .image)),
                                 const SizedBox(width: 10),
                                 Expanded(
@@ -575,7 +573,7 @@ class ProfileDetailsScreen extends StatelessWidget {
                                       hintText: 'Write a comment ...',
                                     ),
                                     validator: (value) {
-                                      if (value.isEmpty) {
+                                      if (value!.isEmpty) {
                                         return "Comment is empty ";
                                       }
                                       return null;
@@ -584,17 +582,17 @@ class ProfileDetailsScreen extends StatelessWidget {
                                 ),
                                 InkWell(
                                     onTap: () {
-                                      if (formKey.currentState.validate()) {
+                                      if (formKey.currentState!.validate()) {
                                         debugPrint(commentController.text);
                                         SocialCubit.get(context).commentOnPost(
                                           name: SocialCubit.get(context)
-                                              .userModel
+                                              .userModel!
                                               .name,
                                           image: SocialCubit.get(context)
-                                              .userModel
+                                              .userModel!
                                               .image,
                                           uId: SocialCubit.get(context)
-                                              .userModel
+                                              .userModel!
                                               .uId,
                                           postId: postId,
                                           comment: commentController.text,

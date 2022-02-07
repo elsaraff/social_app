@@ -107,6 +107,12 @@ class SocialPopState extends SocialStates {}
 
 class SocialGetPostCommentsSuccessState extends SocialStates {}
 
+class SocialCommentsUIDSuccessState extends SocialStates {
+  final String id;
+
+  SocialCommentsUIDSuccessState(this.id);
+}
+
 class SocialGetPostCommentsErrorState extends SocialStates {
   final String error;
 

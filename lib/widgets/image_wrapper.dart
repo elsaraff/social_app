@@ -2,24 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 
 class ImageWrapper extends StatefulWidget {
-  const ImageWrapper({
-    Key key,
-    this.imageProvider,
-    this.loadingBuilder,
-    this.backgroundDecoration,
-    this.minScale,
-    this.maxScale,
-    this.initialScale,
-    this.errorBuilder,
-  }) : super(key: key);
-
   final ImageProvider imageProvider;
   final LoadingBuilder loadingBuilder;
   final BoxDecoration backgroundDecoration;
   final dynamic minScale;
   final dynamic maxScale;
   final dynamic initialScale;
-  final ImageErrorWidgetBuilder errorBuilder;
+  final ImageErrorWidgetBuilder? errorBuilder;
+
+  const ImageWrapper({
+    Key? key,
+    required this.imageProvider,
+    required this.loadingBuilder,
+    required this.backgroundDecoration,
+    this.minScale,
+    this.maxScale,
+    this.initialScale,
+    this.errorBuilder,
+  }) : super(key: key);
 
   @override
   State<ImageWrapper> createState() => _ImageWrapperState();

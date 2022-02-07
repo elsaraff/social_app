@@ -13,13 +13,13 @@ import 'package:social_application/widgets/functions.dart';
 var messageController = TextEditingController();
 
 class ChatDetailsScreen extends StatelessWidget {
-  final SocialUserModel userModel;
-  const ChatDetailsScreen({Key key, this.userModel}) : super(key: key);
+  final SocialUserModel? userModel;
+  const ChatDetailsScreen({Key? key, this.userModel}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Builder(builder: (context) {
-      SocialCubit.get(context).getMessages(receiverId: userModel.uId);
+      SocialCubit.get(context).getMessages(receiverId: userModel!.uId);
       return BlocConsumer<SocialCubit, SocialStates>(
         listener: (context, state) {},
         builder: (context, state) {
@@ -35,16 +35,16 @@ class ChatDetailsScreen extends StatelessWidget {
                 title: InkWell(
                   onTap: () {
                     navigateTo(
-                        context, ProfileDetailsScreen(userModel: userModel));
+                        context, ProfileDetailsScreen(userModel: userModel!));
                   },
                   child: Row(
                     children: [
                       CircleAvatar(
                         radius: 20.0,
-                        backgroundImage: NetworkImage(userModel.image),
+                        backgroundImage: NetworkImage(userModel!.image),
                       ),
                       const SizedBox(width: 15),
-                      Text(userModel.name),
+                      Text(userModel!.name),
                     ],
                   ),
                 ),
@@ -70,7 +70,7 @@ class ChatDetailsScreen extends StatelessWidget {
                                           .messages[index];
 
                                       if (SocialCubit.get(context)
-                                              .userModel
+                                              .userModel!
                                               .uId ==
                                           message.senderId) {
                                         return buildMyMessage(message);
@@ -110,7 +110,7 @@ class ChatDetailsScreen extends StatelessWidget {
                                     onFieldSubmitted: (value) {
                                       if (messageController.text != '') {
                                         SocialCubit.get(context).sendMessage(
-                                          receiverId: userModel.uId,
+                                          receiverId: userModel!.uId,
                                           dateTime: now.toString(),
                                           time: DateTime.now().toString(),
                                           text: value,
@@ -132,7 +132,7 @@ class ChatDetailsScreen extends StatelessWidget {
                                       onPressed: () {
                                         if (messageController.text != '') {
                                           SocialCubit.get(context).sendMessage(
-                                            receiverId: userModel.uId,
+                                            receiverId: userModel!.uId,
                                             dateTime: now.toString(),
                                             time: DateTime.now().toString(),
                                             text: messageController.text,

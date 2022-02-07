@@ -25,10 +25,10 @@ class RegisterCubit extends Cubit<RegisterStates> {
   }
 
   void userRegister({
-    @required String name,
-    @required String email,
-    @required String phone,
-    @required String password,
+    required String name,
+    required String email,
+    required String phone,
+    required String password,
   }) {
     emit(RegisterLoadingState());
 
@@ -38,13 +38,13 @@ class RegisterCubit extends Cubit<RegisterStates> {
       password: password,
     )
         .then((value) {
-      CacheHelper.saveData(key: 'uId', value: value.user.uid);
-      uId = value.user.uid;
+      CacheHelper.saveData(key: 'uId', value: value.user!.uid);
+      uId = value.user!.uid;
       userCreat(
         name: name,
         email: email,
         phone: phone,
-        uId: value.user.uid,
+        uId: value.user!.uid,
       );
       emit(RegisterSuccessState());
     }).catchError((error) {
@@ -53,10 +53,10 @@ class RegisterCubit extends Cubit<RegisterStates> {
   }
 
   void userCreat({
-    @required String name,
-    @required String email,
-    @required String phone,
-    @required String uId,
+    required String name,
+    required String email,
+    required String phone,
+    required String uId,
   }) {
     SocialUserModel model = SocialUserModel(
       name: name,

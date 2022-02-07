@@ -18,7 +18,7 @@ var phoneController = TextEditingController();
 var passwordController = TextEditingController();
 
 class RegisterScreen extends StatelessWidget {
-  const RegisterScreen({Key key}) : super(key: key);
+  const RegisterScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -128,7 +128,7 @@ class RegisterScreen extends StatelessWidget {
                                   style: TextStyle(color: Colors.white),
                                 ),
                                 onPressed: () {
-                                  if (formKey.currentState.validate()) {
+                                  if (formKey.currentState!.validate()) {
                                     registerCubit.userRegister(
                                         name: nameController.text,
                                         email: emailController.text,

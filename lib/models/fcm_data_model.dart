@@ -1,8 +1,8 @@
 class FcmDataModel {
-  String to;
-  Notification notification;
-  Android android;
-  Data data;
+  late String to;
+  late Notification notification;
+  late Android android;
+  late Data data;
 
   FcmDataModel.fromJson(Map<String, dynamic> json) {
     to = json['to'];
@@ -13,8 +13,8 @@ class FcmDataModel {
 }
 
 class Notification {
-  String title;
-  String body;
+  late String title;
+   late String body;
 
   Notification.fromJson(Map<String, dynamic> json) {
     title = json['title'];
@@ -23,8 +23,8 @@ class Notification {
 }
 
 class Android {
-  String priority;
-  AndroidNotification notification;
+  late String priority;
+  late AndroidNotification notification;
 
   Android.fromJson(Map<String, dynamic> json) {
     priority = json['priority'];
@@ -33,11 +33,11 @@ class Android {
 }
 
 class AndroidNotification {
-  String notificationPriority;
-  String sound;
-  bool defaultSound;
-  bool defaultVibrateTimings;
-  bool defaultLightSettings;
+  late String notificationPriority;
+  late String sound;
+  late bool defaultSound;
+  late bool defaultVibrateTimings;
+  late bool defaultLightSettings;
 
   AndroidNotification.fromJson(Map<String, dynamic> json) {
     notificationPriority = json['notification_priority'];
@@ -49,9 +49,9 @@ class AndroidNotification {
 }
 
 class Data {
-  String id;
-  String name;
-  String clickAction;
+  late String id;
+  late String name;
+  late String clickAction;
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];

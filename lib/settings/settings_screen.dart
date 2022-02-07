@@ -15,7 +15,7 @@ import 'package:social_application/widgets/functions.dart';
 import '../widgets/image_wrapper.dart';
 
 class SettingsScreen extends StatelessWidget {
-  const SettingsScreen({Key key}) : super(key: key);
+  const SettingsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +54,7 @@ class SettingsScreen extends StatelessWidget {
                                     context,
                                     ImageWrapper(
                                       imageProvider:
-                                          NetworkImage(userModel.cover),
+                                          NetworkImage(userModel!.cover),
                                       backgroundDecoration: const BoxDecoration(
                                           color: Colors.black),
                                       minScale:
@@ -94,7 +94,7 @@ class SettingsScreen extends StatelessWidget {
                                             topRight: Radius.circular(4),
                                             topLeft: Radius.circular(4)),
                                         image: DecorationImage(
-                                          image: NetworkImage(userModel.cover),
+                                          image: NetworkImage(userModel!.cover),
                                           fit: BoxFit.cover,
                                         ))),
                               ),
@@ -288,7 +288,7 @@ class SettingsScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 20),
                       ConditionalBuilder(
-                          condition: userModel != null,
+                          condition: true,
                           builder: (context) => Column(
                                 children: [
                                   ListView.separated(
@@ -341,7 +341,7 @@ class SettingsScreen extends StatelessWidget {
 
     return Column(
       children: [
-        if (userModel.uId == postModel.uId)
+        if (userModel!.uId == postModel.uId)
           Form(
             key: formKey,
             child: Card(
@@ -576,7 +576,7 @@ class SettingsScreen extends StatelessWidget {
                           child: InkWell(
                             onTap: () {
                               SocialCubit.get(context).getPostLikes(postId);
-                              if (likes[postId] >= 1) {
+                              if (likes[postId]! >= 1) {
                                 Navigator.push(context,
                                     ScaleTransition1(const LikesScreen()));
                               }
@@ -604,7 +604,7 @@ class SettingsScreen extends StatelessWidget {
                           child: InkWell(
                             onTap: () {
                               SocialCubit.get(context).getPostComments(postId);
-                              if (comments[postId] >= 1) {
+                              if (comments[postId]! >= 1) {
                                 Navigator.push(context,
                                     ScaleTransition2(const CommentsScreen()));
                               }
@@ -643,7 +643,7 @@ class SettingsScreen extends StatelessWidget {
                                     radius: 19,
                                     backgroundImage: NetworkImage(
                                         SocialCubit.get(context)
-                                            .userModel
+                                            .userModel!
                                             .image)),
                                 const SizedBox(width: 10),
                                 Expanded(
@@ -659,7 +659,7 @@ class SettingsScreen extends StatelessWidget {
                                       hintText: 'Write a comment ...',
                                     ),
                                     validator: (value) {
-                                      if (value.isEmpty) {
+                                      if (value!.isEmpty) {
                                         return "Comment is empty ";
                                       }
                                       return null;
@@ -668,16 +668,16 @@ class SettingsScreen extends StatelessWidget {
                                 ),
                                 InkWell(
                                     onTap: () {
-                                      if (formKey.currentState.validate()) {
+                                      if (formKey.currentState!.validate()) {
                                         SocialCubit.get(context).commentOnPost(
                                           name: SocialCubit.get(context)
-                                              .userModel
+                                              .userModel!
                                               .name,
                                           image: SocialCubit.get(context)
-                                              .userModel
+                                              .userModel!
                                               .image,
                                           uId: SocialCubit.get(context)
-                                              .userModel
+                                              .userModel!
                                               .uId,
                                           postId: postId,
                                           comment: commentController.text,

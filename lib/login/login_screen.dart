@@ -16,7 +16,7 @@ var emailController = TextEditingController();
 var passwordController = TextEditingController();
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key key}) : super(key: key);
+  const LoginScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@ class LoginScreen extends StatelessWidget {
               emailController.clear();
               passwordController.clear();
 
-              LoginCubit.get(context).updateToken(token);
+              LoginCubit.get(context).updateToken(token!);
 
               if (firstTime == false) {
                 SocialCubit.get(context).getUserData();
@@ -102,7 +102,7 @@ class LoginScreen extends StatelessWidget {
                           width: double.infinity,
                           child: MaterialButton(
                             onPressed: () {
-                              if (formKey.currentState.validate()) {
+                              if (formKey.currentState!.validate()) {
                                 loginCubit.userLogin(
                                     email: emailController.text,
                                     password: passwordController.text);

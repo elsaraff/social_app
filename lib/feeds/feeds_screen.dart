@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:social_application/feeds/comments_screen.dart';
 import 'package:social_application/feeds/likes_screen.dart';
+import 'package:social_application/friends/profile_details_screen.dart';
 import 'package:social_application/widgets/image_wrapper.dart';
 import 'package:social_application/models/post_model.dart';
 import 'package:social_application/shared/icons_broken.dart';
@@ -16,17 +17,16 @@ import 'package:social_application/social_cubit/social_states.dart';
 import 'package:social_application/widgets/functions.dart';
 
 class FeedsScreen extends StatelessWidget {
-  const FeedsScreen({Key key}) : super(key: key);
+  const FeedsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<SocialCubit, SocialStates>(
       listener: (context, state) {},
       builder: (context, state) {
-        var userModel = SocialCubit.get(context).userModel;
         var posts = SocialCubit.get(context).posts;
         return ConditionalBuilder(
-            condition: userModel != null,
+            condition: posts.isNotEmpty,
             builder: (context) => RefreshIndicator(
                   color: Colors.blueGrey,
                   displacement: 20,
@@ -100,6 +100,7 @@ class FeedsScreen extends StatelessWidget {
   ) {
     var commentController = TextEditingController();
     var formKey = GlobalKey<FormState>();
+    var postUserInfo = SocialCubit.get(context).postUserInfo;
 
     return Form(
       key: formKey,
@@ -114,29 +115,43 @@ class FeedsScreen extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  CircleAvatar(
-                      radius: 25,
-                      backgroundImage: NetworkImage(postModel.image)),
+                  InkWell(
+                    onTap: () {
+                      navigateTo(context,
+                          ProfileDetailsScreen(userModel: postUserInfo[index]));
+                    },
+                    child: CircleAvatar(
+                        radius: 25,
+                        backgroundImage: NetworkImage(postModel.image)),
+                  ),
                   const SizedBox(width: 15),
                   Expanded(
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                        Row(
-                          children: [
-                            Text(postModel.name,
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  height: 1.6,
-                                  fontWeight: FontWeight.bold,
-                                )),
-                            const SizedBox(width: 4),
-                            const Icon(
-                              Icons.check_circle,
-                              color: Colors.blueGrey,
-                              size: 13,
-                            ),
-                          ],
+                        InkWell(
+                          onTap: () {
+                            navigateTo(
+                                context,
+                                ProfileDetailsScreen(
+                                    userModel: postUserInfo[index]));
+                          },
+                          child: Row(
+                            children: [
+                              Text(postModel.name,
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    height: 1.6,
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                              const SizedBox(width: 4),
+                              const Icon(
+                                Icons.check_circle,
+                                color: Colors.blueGrey,
+                                size: 13,
+                              ),
+                            ],
+                          ),
                         ),
                         Text(
                           postModel.dateTime,
@@ -147,7 +162,7 @@ class FeedsScreen extends StatelessWidget {
                           ),
                         ),
                       ])),
-                  if (postModel.uId == FirebaseAuth.instance.currentUser.uid)
+                  if (postModel.uId == FirebaseAuth.instance.currentUser!.uid)
                     PopupMenuButton(
                         itemBuilder: (BuildContext context) => <PopupMenuEntry>[
                               PopupMenuItem(
@@ -332,7 +347,7 @@ class FeedsScreen extends StatelessWidget {
                     child: InkWell(
                       onTap: () {
                         SocialCubit.get(context).getPostLikes(postId);
-                        if (likes[postId] >= 1) {
+                        if (likes[postId]! >= 1) {
                           Navigator.push(
                               context, ScaleTransition1(const LikesScreen()));
                         }
@@ -359,7 +374,7 @@ class FeedsScreen extends StatelessWidget {
                     child: InkWell(
                       onTap: () {
                         SocialCubit.get(context).getPostComments(postId);
-                        if (comments[postId] >= 1) {
+                        if (comments[postId]! >= 1) {
                           Navigator.push(context,
                               ScaleTransition2(const CommentsScreen()));
                         }
@@ -391,10 +406,19 @@ class FeedsScreen extends StatelessWidget {
                     Expanded(
                       child: Row(
                         children: [
-                          CircleAvatar(
-                              radius: 19,
-                              backgroundImage: NetworkImage(
-                                  SocialCubit.get(context).userModel.image)),
+                          InkWell(
+                            onTap: () {
+                              navigateTo(
+                                  context,
+                                  ProfileDetailsScreen(
+                                      userModel:
+                                          SocialCubit.get(context).userModel));
+                            },
+                            child: CircleAvatar(
+                                radius: 19,
+                                backgroundImage: NetworkImage(
+                                    SocialCubit.get(context).userModel!.image)),
+                          ),
                           const SizedBox(width: 10),
                           Expanded(
                             child: TextFormField(
@@ -409,7 +433,7 @@ class FeedsScreen extends StatelessWidget {
                                 hintText: 'Write a comment ...',
                               ),
                               validator: (value) {
-                                if (value.isEmpty) {
+                                if (value!.isEmpty) {
                                   return "Comment is empty ";
                                 }
                                 return null;
@@ -418,14 +442,16 @@ class FeedsScreen extends StatelessWidget {
                           ),
                           InkWell(
                               onTap: () {
-                                if (formKey.currentState.validate()) {
+                                if (formKey.currentState!.validate()) {
                                   SocialCubit.get(context).commentOnPost(
-                                    name:
-                                        SocialCubit.get(context).userModel.name,
+                                    name: SocialCubit.get(context)
+                                        .userModel!
+                                        .name,
                                     image: SocialCubit.get(context)
-                                        .userModel
+                                        .userModel!
                                         .image,
-                                    uId: SocialCubit.get(context).userModel.uId,
+                                    uId:
+                                        SocialCubit.get(context).userModel!.uId,
                                     postId: postId,
                                     comment: commentController.text,
                                     dateTime: now.toString(),
