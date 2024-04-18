@@ -1,9 +1,6 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:social_application/feeds/comments_screen.dart';
@@ -17,7 +14,7 @@ import 'package:social_application/social_cubit/social_states.dart';
 import 'package:social_application/widgets/functions.dart';
 
 class FeedsScreen extends StatelessWidget {
-  const FeedsScreen({Key? key}) : super(key: key);
+  const FeedsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -460,10 +457,10 @@ class FeedsScreen extends StatelessWidget {
                                   commentController.clear();
                                 }
                               },
-                              child: Padding(
-                                  padding: const EdgeInsets.symmetric(
+                              child: const Padding(
+                                  padding: EdgeInsets.symmetric(
                                       vertical: 7.0, horizontal: 7.0),
-                                  child: Row(children: const [
+                                  child: Row(children: [
                                     Icon(Icons.comment_bank_outlined,
                                         color: Colors.blueGrey, size: 25)
                                   ]))),
@@ -475,10 +472,10 @@ class FeedsScreen extends StatelessWidget {
                                     DateTime.now().toString(),
                                   );
                                 },
-                                child: Padding(
-                                    padding: const EdgeInsets.symmetric(
+                                child: const Padding(
+                                    padding: EdgeInsets.symmetric(
                                         horizontal: 7.0, vertical: 7.0),
-                                    child: Row(children: const [
+                                    child: Row(children: [
                                       Icon(Icons.favorite_border,
                                           color: Colors.red, size: 25),
                                     ]))),
@@ -487,10 +484,10 @@ class FeedsScreen extends StatelessWidget {
                                 onTap: () {
                                   SocialCubit.get(context).dislikePost(postId);
                                 },
-                                child: Padding(
-                                    padding: const EdgeInsets.symmetric(
+                                child: const Padding(
+                                    padding: EdgeInsets.symmetric(
                                         horizontal: 7.0, vertical: 7.0),
-                                    child: Row(children: const [
+                                    child: Row(children: [
                                       Icon(Icons.favorite,
                                           color: Colors.red, size: 25),
                                     ]))),

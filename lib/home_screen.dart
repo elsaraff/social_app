@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_application/new_post/new_post_screen.dart';
@@ -9,7 +8,7 @@ import 'package:social_application/social_cubit/social_states.dart';
 import 'package:social_application/widgets/functions.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -43,9 +42,8 @@ class HomeScreen extends StatelessWidget {
           body: socialCubit.screens[socialCubit.currentIndex],
           bottomNavigationBar: BottomAppBar(
             shape: const CircularNotchedRectangle(),
-            notchMargin: 3.0,
-            clipBehavior: Clip.antiAliasWithSaveLayer,
             child: BottomNavigationBar(
+              selectedFontSize: 10,
               type: BottomNavigationBarType.fixed,
               currentIndex: socialCubit.currentIndex,
               selectedItemColor: Colors.blueGrey,
@@ -59,8 +57,7 @@ class HomeScreen extends StatelessWidget {
                 BottomNavigationBarItem(
                     icon: Icon(IconBroken.Chat), label: "Chats"),
                 BottomNavigationBarItem(
-                    icon: Icon(IconBroken.Paper_Upload,
-                        color: Colors.white, size: 0.0001),
+                    icon: Icon(IconBroken.Paper_Upload, color: Colors.white),
                     label: "post"),
                 BottomNavigationBarItem(
                     icon: Icon(IconBroken.User1), label: "Friends"),
@@ -72,8 +69,6 @@ class HomeScreen extends StatelessWidget {
           floatingActionButtonLocation:
               FloatingActionButtonLocation.miniCenterDocked,
           floatingActionButton: SizedBox(
-            height: 70,
-            width: 70,
             child: Padding(
                 padding: const EdgeInsets.all(5.0),
                 child: FloatingActionButton(

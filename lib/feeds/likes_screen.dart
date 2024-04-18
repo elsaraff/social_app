@@ -8,7 +8,7 @@ import 'package:social_application/social_cubit/social_states.dart';
 import 'package:social_application/widgets/functions.dart';
 
 class LikesScreen extends StatelessWidget {
-  const LikesScreen({Key? key}) : super(key: key);
+  const LikesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,10 +24,8 @@ class LikesScreen extends StatelessWidget {
                 icon: const Icon(IconBroken.Arrow___Left, color: Colors.white)),
             titleSpacing: 0.0,
             title: SocialCubit.get(context).postLikes.length > 1
-                ? Text(SocialCubit.get(context).postLikes.length.toString() +
-                    ' Likes')
-                : Text(SocialCubit.get(context).postLikes.length.toString() +
-                    ' Like'),
+                ? Text('${SocialCubit.get(context).postLikes.length} Likes')
+                : Text('${SocialCubit.get(context).postLikes.length} Like'),
           ),
           body: ConditionalBuilder(
             condition: SocialCubit.get(context).postLikes.isNotEmpty,

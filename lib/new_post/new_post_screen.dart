@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_application/shared/icons_broken.dart';
 import 'package:social_application/social_cubit/social_cubit.dart';
@@ -11,7 +9,7 @@ import 'package:social_application/widgets/show_toast.dart';
 var postController = TextEditingController();
 
 class NewPostScreen extends StatelessWidget {
-  const NewPostScreen({Key? key}) : super(key: key);
+  const NewPostScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -127,9 +125,9 @@ class NewPostScreen extends StatelessWidget {
                               onPressed: () {
                                 socialCubit.getPostImage();
                               },
-                              child: Row(
+                              child: const Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                children: const [
+                                children: [
                                   Icon(IconBroken.Image),
                                   SizedBox(width: 5),
                                   Text('add photo'),
@@ -139,9 +137,9 @@ class NewPostScreen extends StatelessWidget {
                         Expanded(
                           child: TextButton(
                               onPressed: () {},
-                              child: Row(
+                              child: const Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                children: const [
+                                children: [
                                   Text('#',
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
@@ -180,9 +178,9 @@ class NewPostScreen extends StatelessWidget {
                                         state: ToastStates.success);
                                   }
                                 },
-                                child: Row(
+                                child: const Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
-                                  children: const [
+                                  children: [
                                     Icon(IconBroken.Paper_Upload),
                                     SizedBox(width: 5),
                                     Text('Post',

@@ -1,11 +1,9 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:bloc/bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:social_application/chats/chats_screen.dart';
 import 'package:social_application/core/cache_helper.dart';
@@ -423,7 +421,7 @@ class SocialCubit extends Cubit<SocialStates> {
   }
 
   void s(String id) {
-    debugPrint('id' + id);
+    debugPrint('id$id');
     if (id != '') {
       FirebaseFirestore.instance
           .collection('users')

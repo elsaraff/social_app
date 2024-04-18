@@ -22,6 +22,7 @@ Widget customTextFormField({
         obscureText: isPassword,
         validator: (v) {
           validate!(v);
+          return null;
         },
         onFieldSubmitted: (s) {
           onSubmit!(s);

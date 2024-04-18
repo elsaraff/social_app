@@ -11,7 +11,7 @@ class ImageWrapper extends StatefulWidget {
   final ImageErrorWidgetBuilder? errorBuilder;
 
   const ImageWrapper({
-    Key? key,
+    super.key,
     required this.imageProvider,
     required this.loadingBuilder,
     required this.backgroundDecoration,
@@ -19,7 +19,7 @@ class ImageWrapper extends StatefulWidget {
     this.maxScale,
     this.initialScale,
     this.errorBuilder,
-  }) : super(key: key);
+  });
 
   @override
   State<ImageWrapper> createState() => _ImageWrapperState();

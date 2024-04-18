@@ -14,7 +14,7 @@ var messageController = TextEditingController();
 
 class ChatDetailsScreen extends StatelessWidget {
   final SocialUserModel? userModel;
-  const ChatDetailsScreen({Key? key, this.userModel}) : super(key: key);
+  const ChatDetailsScreen({super.key, this.userModel});
 
   @override
   Widget build(BuildContext context) {
@@ -85,8 +85,8 @@ class ChatDetailsScreen extends StatelessWidget {
                                         .length,
                                   ),
                                 ),
-                            fallback: (context) => Expanded(
-                                    child: Column(children: const [
+                            fallback: (context) => const Expanded(
+                                    child: Column(children: [
                                   Spacer(),
                                   Center(
                                       child: Text('Start Chat...',

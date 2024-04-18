@@ -6,7 +6,7 @@ import 'package:social_application/social_cubit/social_states.dart';
 import 'package:social_application/widgets/functions.dart';
 
 class FriendsScreen extends StatelessWidget {
-  const FriendsScreen({Key? key}) : super(key: key);
+  const FriendsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

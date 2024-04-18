@@ -1,8 +1,6 @@
-import 'dart:ui';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_application/shared/icons_broken.dart';
 import 'package:social_application/social_cubit/social_cubit.dart';
@@ -16,7 +14,7 @@ var bioController = TextEditingController();
 var phoneController = TextEditingController();
 
 class EditProfileScreen extends StatelessWidget {
-  const EditProfileScreen({Key? key}) : super(key: key);
+  const EditProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

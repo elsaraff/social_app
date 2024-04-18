@@ -11,7 +11,7 @@ import 'package:social_application/widgets/functions.dart';
 import 'package:social_application/widgets/show_toast.dart';
 
 Future<void> firebaseMessagingBackGroundHandler(RemoteMessage message) async {
-  debugPrint('onBackgroundMessage ' + message.data.toString());
+  debugPrint('onBackgroundMessage ${message.data}');
   showToast(text: 'onBackgroundMessage', state: ToastStates.success);
 }
 
@@ -23,12 +23,12 @@ void main() async {
   //debugPrint('Token ' + token);
 
   FirebaseMessaging.onMessage.listen((event) {
-    debugPrint('onMessage event.data ' + event.data.toString());
+    debugPrint('onMessage event.data ${event.data}');
     showToast(text: 'onMessage', state: ToastStates.success);
   });
 
   FirebaseMessaging.onMessageOpenedApp.listen((event) {
-    debugPrint('onMessageOpenedApp  event.data ' + event.data.toString());
+    debugPrint('onMessageOpenedApp  event.data ${event.data}');
     showToast(text: 'onMessageOpenedApp', state: ToastStates.success);
   });
 
@@ -58,7 +58,7 @@ void main() async {
 class MyApp extends StatelessWidget {
   final Widget? startWidget;
 
-  const MyApp({Key? key, this.startWidget}) : super(key: key);
+  const MyApp({super.key, this.startWidget});
 
   @override
   Widget build(BuildContext context) {

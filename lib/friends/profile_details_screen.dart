@@ -1,6 +1,5 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:social_application/feeds/comments_screen.dart';
@@ -15,7 +14,7 @@ import 'package:social_application/widgets/functions.dart';
 
 class ProfileDetailsScreen extends StatelessWidget {
   final SocialUserModel? userModel;
-  const ProfileDetailsScreen({Key? key, this.userModel}) : super(key: key);
+  const ProfileDetailsScreen({super.key, this.userModel});
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +34,7 @@ class ProfileDetailsScreen extends StatelessWidget {
                       const Icon(IconBroken.Arrow___Left, color: Colors.white)),
               titleSpacing: 0.0,
               title: Text(
-                userModel!.name + '\'s Profile',
+                '${userModel!.name}\'s Profile',
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -182,8 +181,8 @@ class ProfileDetailsScreen extends StatelessWidget {
                       children: [
                         Expanded(
                           child: InkWell(
-                            child: Column(
-                              children: const [
+                            child: const Column(
+                              children: [
                                 Text('157',
                                     style: TextStyle(
                                         fontSize: 15,
@@ -201,8 +200,8 @@ class ProfileDetailsScreen extends StatelessWidget {
                         ),
                         Expanded(
                           child: InkWell(
-                            child: Column(
-                              children: const [
+                            child: const Column(
+                              children: [
                                 Text('57',
                                     style: TextStyle(
                                         fontSize: 15,
@@ -220,8 +219,8 @@ class ProfileDetailsScreen extends StatelessWidget {
                         ),
                         Expanded(
                           child: InkWell(
-                            child: Column(
-                              children: const [
+                            child: const Column(
+                              children: [
                                 Text('396',
                                     style: TextStyle(
                                         fontSize: 15,
@@ -239,8 +238,8 @@ class ProfileDetailsScreen extends StatelessWidget {
                         ),
                         Expanded(
                           child: InkWell(
-                            child: Column(
-                              children: const [
+                            child: const Column(
+                              children: [
                                 Text('812',
                                     style: TextStyle(
                                         fontSize: 15,
@@ -602,10 +601,10 @@ class ProfileDetailsScreen extends StatelessWidget {
                                         commentController.clear();
                                       }
                                     },
-                                    child: Padding(
-                                        padding: const EdgeInsets.symmetric(
+                                    child: const Padding(
+                                        padding: EdgeInsets.symmetric(
                                             vertical: 7.0, horizontal: 7.0),
-                                        child: Row(children: const [
+                                        child: Row(children: [
                                           Icon(Icons.comment_bank_outlined,
                                               color: Colors.blueGrey, size: 25)
                                         ]))),
@@ -617,10 +616,10 @@ class ProfileDetailsScreen extends StatelessWidget {
                                           DateTime.now().toString(),
                                         );
                                       },
-                                      child: Padding(
-                                          padding: const EdgeInsets.symmetric(
+                                      child: const Padding(
+                                          padding: EdgeInsets.symmetric(
                                               horizontal: 7.0, vertical: 7.0),
-                                          child: Row(children: const [
+                                          child: Row(children: [
                                             Icon(Icons.favorite_border,
                                                 color: Colors.red, size: 25),
                                           ]))),
@@ -630,10 +629,10 @@ class ProfileDetailsScreen extends StatelessWidget {
                                         SocialCubit.get(context)
                                             .dislikePost(postId);
                                       },
-                                      child: Padding(
-                                          padding: const EdgeInsets.symmetric(
+                                      child: const Padding(
+                                          padding: EdgeInsets.symmetric(
                                               horizontal: 7.0, vertical: 7.0),
-                                          child: Row(children: const [
+                                          child: Row(children: [
                                             Icon(Icons.favorite,
                                                 color: Colors.red, size: 25),
                                           ]))),

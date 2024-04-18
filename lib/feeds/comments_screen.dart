@@ -9,7 +9,7 @@ import 'package:social_application/social_cubit/social_states.dart';
 import 'package:social_application/widgets/functions.dart';
 
 class CommentsScreen extends StatelessWidget {
-  const CommentsScreen({Key? key}) : super(key: key);
+  const CommentsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -35,11 +35,9 @@ class CommentsScreen extends StatelessWidget {
               titleSpacing: 0.0,
               title: SocialCubit.get(context).postComments.length > 1
                   ? Text(
-                      SocialCubit.get(context).postComments.length.toString() +
-                          ' Comments')
+                      '${SocialCubit.get(context).postComments.length} Comments')
                   : Text(
-                      SocialCubit.get(context).postComments.length.toString() +
-                          ' Comment'),
+                      '${SocialCubit.get(context).postComments.length} Comment'),
             ),
             body: ConditionalBuilder(
               condition: SocialCubit.get(context).postComments.isNotEmpty,

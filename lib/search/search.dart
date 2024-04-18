@@ -8,7 +8,7 @@ import 'package:social_application/widgets/functions.dart';
 var searchController = TextEditingController();
 
 class SearchInput extends StatelessWidget {
-  const SearchInput({Key? key}) : super(key: key);
+  const SearchInput({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -85,9 +85,9 @@ class SearchInput extends StatelessWidget {
                                 height: 0.5,
                               ),
                           itemCount: search.length),
-                      fallback: (context) => Center(
+                      fallback: (context) => const Center(
                         child: Column(
-                          children: const [
+                          children: [
                             SizedBox(height: 10),
                             Text(
                               'Enter Text To Search',
